@@ -33,6 +33,10 @@ import static org.junit.Assert.assertFalse;
  */
 public class XOfAKindInADeckOfCards {
 
+    /**
+     * ALTERNATIVE SOLUTION:
+     * 1. find the smallest value in keyCnt first, then divide every other rest value in map.
+     */
     public boolean hasGroupsSizeX(int[] deck) {
         Map<Integer, Integer> keyCnt = new HashMap<>();
         for (int d : deck) {
@@ -56,9 +60,6 @@ public class XOfAKindInADeckOfCards {
         return largestCommonDivisor != null;
     }
 
-    /**
-     * a >= b
-     */
     private Integer largestCommonDivisor(int a, int b) {
         System.out.println("a: " + a + ", b: " + b);
         if (b > a)
