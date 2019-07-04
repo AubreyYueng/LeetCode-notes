@@ -58,41 +58,10 @@ public class LetterCombinationsOfAPhoneNumber {
             return prefixes == null ? Collections.emptyList() : prefixes;
 
         List<String> poppedFirst = candidates.pop();
-        /*return combination(
+        return combination(
                 prefixes.stream().flatMap(p -> poppedFirst.stream().map(c -> p+c)).collect(toList()),
                 candidates
-        );*/
-        List<String> newPrefixes = new LinkedList<>();
-        for (String prefix : prefixes) {
-            for (String popped : poppedFirst) {
-                newPrefixes.add(prefix + popped);
-            }
-        }
-        return combination(newPrefixes, candidates);
-    }
-
-    public List<String> letterCombinations_1(String digits) {
-        List<List<String>> candidates = Arrays.stream(digits.split("")).map(phone::get).collect(toList());
-        candidates.removeIf(Objects::isNull);
-
-        List<String> results = new ArrayList<>();
-        traceRoutes(candidates, results, "", 0);
-        return results;
-    }
-
-    private void traceRoutes(List<List<String>> candidates, List<String> results, String result, int level) {
-//        out.println("waitingList: " + waitingList + ", results: " + results + ", result: " + result + ", level: " + level);
-        if (candidates.isEmpty())
-            return;
-        if (level == candidates.size()) {
-            results.add(result);
-            return;
-        }
-
-        List<String> candidate = candidates.get(level);
-        for (String c : candidate) {
-            traceRoutes(candidates, results, result+c, level+1);
-        }
+        );
     }
 
     public List<String> letterCombinations_1(String digits) {
