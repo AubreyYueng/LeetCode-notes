@@ -1,11 +1,8 @@
 package easy;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.System.out;
 import static java.util.Arrays.asList;
@@ -26,11 +23,15 @@ import static java.util.stream.Collectors.toList;
  *
  * Although the above answer is in lexicographical order, your answer could be in any order you want.
  *
+ * TODO: 1. letterCombinations is a tail recursion which can be transformed into loop, not an actual tree
+ * TODO: 2. letterCombinations_1 is tree equivalent to finding every routes.
+ *
  */
 public class LetterCombinationsOfAPhoneNumber {
 
-    public List<String> letterCombinations(String digits) {
-        Map<String, List<String>> phone = new HashMap<>();
+    private static Map<String, List<String>> phone = new HashMap<>();
+
+    static  {
         phone.put("2", asList("a", "b", "c"));
         phone.put("3", asList("d", "e", "f"));
         phone.put("4", asList("g", "h", "i"));
@@ -39,10 +40,9 @@ public class LetterCombinationsOfAPhoneNumber {
         phone.put("7", asList("p", "q", "r", "s"));
         phone.put("8", asList("t", "u", "v"));
         phone.put("9", asList("w", "x", "y", "z"));
+    }
 
-        if (digits.length() == 0)
-            return new LinkedList<>();
-
+    public List<String> letterCombinations(String digits) {
         String[] strings = digits.split("");
         LinkedList<List<String>> candidates = new LinkedList<>();
         for (int i = 1; i < strings.length; i++) {
@@ -55,17 +55,48 @@ public class LetterCombinationsOfAPhoneNumber {
     private List<String> combination(List<String> prefixes, LinkedList<List<String>> candidates) {
         out.println("prefixes: " + prefixes + ", candidates: " + candidates);
         if (candidates.isEmpty())
-            return prefixes;
+            return prefixes == null ? Collections.emptyList() : prefixes;
 
         List<String> poppedFirst = candidates.pop();
-        return combination(
+        /*return combination(
                 prefixes.stream().flatMap(p -> poppedFirst.stream().map(c -> p+c)).collect(toList()),
                 candidates
-        );
+        );*/
+        List<String> newPrefixes = new LinkedList<>();
+        for (String prefix : prefixes) {
+            for (String popped : poppedFirst) {
+                newPrefixes.add(prefix + popped);
+            }
+        }
+        return combination(newPrefixes, candidates);
+    }
+
+    public List<String> letterCombinations_1(String digits) {
+        List<List<String>> candidates = Arrays.stream(digits.split("")).map(phone::get).collect(toList());
+        candidates.removeIf(Objects::isNull);
+
+        List<String> results = new ArrayList<>();
+        traceRoutes(candidates, results, "", 0);
+        return results;
+    }
+
+    private void traceRoutes(List<List<String>> candidates, List<String> results, String result, int level) {
+//        out.println("waitingList: " + waitingList + ", results: " + results + ", result: " + result + ", level: " + level);
+        if (candidates.isEmpty())
+            return;
+        if (level == candidates.size()) {
+            results.add(result);
+            return;
+        }
+
+        List<String> candidate = candidates.get(level);
+        for (String c : candidate) {
+            traceRoutes(candidates, results, result+c, level+1);
+        }
     }
 
     @Test
     public void case1() {
-        out.println(letterCombinations("2"));
+        out.println(letterCombinations_1(""));
     }
 }
