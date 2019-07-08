@@ -20,29 +20,47 @@ import static java.lang.System.out;
  * Explanation: The square root of 8 is 2.82842..., and since the decimal part is truncated, 2 is returned.
  *
  * TODO: binary search.
- * TODO: NOTICE 0, 1; USE LONG INSTEAD OF INT
+ * TODO: USE long INSTEAD
+ * TODO: B_SEARCH PATTERN CAN NOT COVER 0, 1
  */
 public class SqrtX {
 
     public int mySqrt(int x) {
-        if (x <= 1) return x;
-        return (int)sqrt(1, x, x);
+        return (int)sqrt(0, x+1, x);
     }
 
     private long sqrt(long low, long high, long x) {
-        long mid = low + (high-low)/2;
+        long mid = (low + high) / 2;
         long sqrt = mid * mid;
-//        out.println("low: " + low + ", high: " + high + ", mid: " + mid + ", sqrt: " + sqrt);
+        out.println("low: " + low + ", high: " + high + ", mid: " + mid + ", sqrt: " + sqrt);
 
-        if (low == mid || sqrt == x)
+        if (low == mid)
             return mid;
         if (sqrt > x)
             return sqrt(low, mid, x);
         return sqrt(mid, high, x);
     }
 
+    /**
+     * Notice: r = original r + 1; refer to sqrt(1) or sqrt(0).
+     * +1 is to ensure that the original r to be checked
+     */
+    private long bSearchPattern(long l, long r) {
+        long mid = (l + r) / 2;
+        if (l == mid)
+            return mid;
+        if (check(mid))
+            return bSearchPattern(l, mid);
+        return bSearchPattern(mid, r);
+    }
+
+    private boolean check(long mid) {
+        // TODO
+        return false;
+    }
+
     @Test
     public void case1() {
-        out.println(mySqrt(2147395599));
+        out.println(mySqrt(1));
     }
 }
