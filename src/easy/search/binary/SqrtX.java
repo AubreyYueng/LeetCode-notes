@@ -64,7 +64,7 @@ public class SqrtX {
     }
 
     /**
-     * TODO: [l, mid - 1] & [mid, r]; mid = actual_mid + 1
+     * TODO: [l, mid - 1] & [mid, r]; mid = (l+r+1) / 2
      */
     public int pattern_2(int x) {
         int low = 0;
