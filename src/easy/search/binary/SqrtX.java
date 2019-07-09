@@ -70,7 +70,7 @@ public class SqrtX {
         int low = 0;
         int high = x;
         while(low < high) {
-            int mid = (low + high) / 2 + 1;
+            int mid = (low + high + 1) / 2;
             out.println("low: " + low + ", high: " + high + ", mid: " + mid + ", sqrt: " + mid*mid);
             if (mid * mid >= x) {
                 high = mid - 1;
