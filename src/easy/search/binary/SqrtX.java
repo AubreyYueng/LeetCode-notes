@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 public class SqrtX {
 
     public int mySqrt(int x) {
-        return (int)sqrt(0, x, x);
+        return (int)sqrt(0, x+1, x);
     }
 
     /**
@@ -38,8 +38,8 @@ public class SqrtX {
         long sqrt = mid * mid;
         out.println("low: " + low + ", high: " + high + ", mid: " + mid + ", sqrt: " + sqrt);
 
-        if (high == mid)
-            return mid;
+        if (low == mid)
+            return low;
         if (sqrt > x)
             return sqrt(low, mid, x);
         return sqrt(mid, high, x);
