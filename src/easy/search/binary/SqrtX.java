@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
  * Explanation: The square root of 8 is 2.82842..., and since the decimal part is truncated, 2 is returned.
  *
  * TODO: refer to the binary search patterns below;
- * TODO: Sqrt can only be applied to [l, mid - 1] & [mid, r]
+ * TODO: The 2 patterns is about to figure out if we need mid(a, a+1) = a(pattern 1) or a+1(pattern 2)
  * TODO: USE long INSTEAD
  */
 public class SqrtX {
@@ -47,6 +47,7 @@ public class SqrtX {
 
     /**
      * TODO: [l, mid] & [mid + 1, r]
+     * TODO: eg. mid-1 mid | mid+1 mid+2
      */
     public int pattern_1(int x) {
         int low = 0;
@@ -65,6 +66,8 @@ public class SqrtX {
 
     /**
      * TODO: [l, mid - 1] & [mid, r]; mid = (l+r+1) / 2
+     * TODO: eg. low = 2^2, high = 3^2, target = 5; We can only set mid[2, 3] = 3 to make sure [2, 2] is get when 5 < 3^2;
+     * TODO: If we set mid[2, 3] = 2, because 2^2 < 5, so we have to move right then we will lead to wrong end of [3, 3]
      */
     public int pattern_2(int x) {
         int low = 0;

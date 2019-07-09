@@ -49,7 +49,7 @@ public class SearchInsertedPosition {
         return search_1(lowIdx, mid, nums, target);
     }
 
-    private int search_2(int[] nums, int target) {
+    private int pattern_1(int[] nums, int target) {
         int lowIdx = 0;
         int highIdx = nums.length;
         while (lowIdx < highIdx) {
@@ -73,7 +73,7 @@ public class SearchInsertedPosition {
 
     @Test
     public void case2() {
-        out.println(search_2(new int[]{1, 3, 5, 6}, 4));
+        out.println(pattern_1(new int[]{1, 3, 5, 6}, 4));
     }
 
 }
