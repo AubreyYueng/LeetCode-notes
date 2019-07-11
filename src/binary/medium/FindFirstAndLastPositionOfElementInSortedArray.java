@@ -1,4 +1,4 @@
-package easy.search.binary;
+package binary.medium;
 
 import org.junit.Test;
 

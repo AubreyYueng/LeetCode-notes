@@ -1,4 +1,4 @@
-package easy;
+package linkedlist.easy;
 
 
 import org.junit.Test;

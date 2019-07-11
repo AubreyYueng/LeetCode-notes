@@ -1,4 +1,4 @@
-package easy;
+package backtracking.medium;
 
 import org.junit.Test;
 
