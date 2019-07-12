@@ -24,8 +24,8 @@ import static org.junit.Assert.assertEquals;
  * Input: nums = [4,5,6,7,0,1,2], target = 3
  * Output: -1
  *
- * TODO: 1. use (mid-1, mid) when compare with nums[low] and find max;
- * TODO: 2. use (mid, mid+1) when compare with nums[high] and find min;
+ * TODO: 1. finding closely on left(eg. maxIdx): it is like set high fixed, adjust low = mid, so it has to be(mid-1, mid)
+ * TODO: 2. finding closely on right: see class FindMinimumInRotatedSortedArray
  * TODO: 3. Notice indexOutOfBoundException when [low = maxIdx + 1;]
  */
 public class SearchInRotatedSortedArray {

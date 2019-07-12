@@ -24,6 +24,8 @@ import static org.junit.Assert.assertEquals;
  * Output: 0
  *
  * TODO: 1. figure out the meaning of rotated: eg.[4,5,6,7,8,0,1,9] is NOT rotated!
+ * TODO: 2. finding closely on right: it is like set low fixed, adjust high = mid, so it has to be(mid, mid+1)
+ * TODO: 3. finding closely on left: see class SearchInRotatedSortedArray
  */
 public class FindMinimumInRotatedSortedArray {
 
