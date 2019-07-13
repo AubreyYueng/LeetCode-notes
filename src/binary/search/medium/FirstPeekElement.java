@@ -1,5 +1,10 @@
 package binary.search.medium;
 
+import org.junit.Test;
+
+import static java.lang.System.out;
+import static org.junit.Assert.assertEquals;
+
 /**
  * Created by Yiyun On 2019/7/13 13:28
  *
@@ -32,9 +37,20 @@ public class FirstPeekElement {
         int mid;
         while(low<high){
             mid = low + (high-low)/2;
+            out.println("low: " + low + ", high: " + high + ", mid: " + mid);
             if(nums[mid]<nums[mid+1]) low = mid + 1;
             else high = mid;
         }
         return low;
+    }
+
+    @Test
+    public void case1() {
+        assertEquals(5, findPeakElement(new int[]{1,2,1,3,5,6,4}));
+    }
+
+    @Test
+    public void case2() {
+        assertEquals(1, findPeakElement(new int[]{1,2,1,8,5,6,4}));
     }
 }
