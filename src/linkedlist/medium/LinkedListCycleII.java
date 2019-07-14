@@ -1,5 +1,10 @@
 package linkedlist.medium;
 
+import org.junit.Test;
+
+import static java.lang.System.out;
+import static org.junit.Assert.assertNull;
+
 /**
  * Created by Yiyun On 2019/7/14 16:39
  *
@@ -27,6 +32,111 @@ package linkedlist.medium;
  *
  * Follow-up:
  * Can you solve it without using extra space?
+ *
+ * TODO: Floyd's Loop detection algorithm, also see binary.search.hard.FindDuplicateNumber
  */
 public class LinkedListCycleII {
+
+    public ListNode detectCycle(ListNode head) {
+//        out.println("head: " + head);
+//        out.println();
+
+        if (head == null)
+            return null;
+
+        // find intersection
+        ListNode slow = head;
+        ListNode fast = head;
+        do {
+            if (fast == null || fast.next == null)
+                return null;
+
+            slow = slow.next;
+            fast = fast.next.next;
+//            out.println("slow: " + slow + ", fast: " + fast);
+
+            if (fast == null)
+                return null;
+
+        } while (slow != fast);
+
+//        out.println("slow: " + slow + ", fast: " + fast);
+        if (slow != fast)
+            return null;
+
+//        out.println();
+
+        // find entrance
+        ListNode ptr1 = head;
+        ListNode ptr2 = slow;
+        while (ptr1 != ptr2) {
+//            out.println("ptr1: " + ptr1 + ", ptr2: " + ptr2);
+            ptr1 = ptr1.next;
+            ptr2 = ptr2.next;
+        }
+//        out.println("ptr1: " + ptr1 + ", ptr2: " + ptr2);
+        return ptr1;
+    }
+
+    class ListNode {
+        int val;
+        int index;
+        ListNode next;
+        ListNode(int x, int index) {
+            val = x;
+            this.index = index;
+            next = null;
+        }
+
+        @Override
+        public String toString() {
+            StringBuilder sb = new StringBuilder().append("(").append(val).append(",").append(index).append(")").append("=>");
+            ListNode next = this.next;
+            int i = 0;
+            while (next != null && i < 15) {
+                sb.append("(").append(next.val).append(",").append(next.index).append(")").append("=>");
+                next = next.next;
+                i++;
+            }
+            return sb.toString();
+        }
+    }
+
+    private ListNode genNode(int[] nums, int pos) {
+        if (nums.length == 0)
+            return null;
+
+        ListNode node = new ListNode(nums[0], 0);
+        ListNode next = node;
+
+        ListNode tail = null;
+
+        for (int i = 1; i < nums.length; i++) {
+            next.next = new ListNode(nums[i], i);
+            next = next.next;
+
+            if (i == pos)
+                tail = next;
+        }
+
+        next.next = tail;
+        return node;
+    }
+
+    @Test
+    public void case1() {
+        assertNull(detectCycle(genNode(new int[]{1,2}, -1)));
+    }
+
+    @Test
+    public void case2() {
+        out.println(detectCycle(genNode(new int[]{
+                -1,-7,7,-4,19,6,-9,-5,-2,-5}, 7)).toString());
+    }
+
+    @Test
+    public void case3() {
+        out.println(detectCycle(genNode(new int[]{
+                3,2,0,-4}, 1)).toString());
+    }
 }
