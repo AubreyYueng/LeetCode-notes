@@ -1,5 +1,6 @@
 package linkedlist.medium;
 
+import linkedlist.ListNode;
 import org.junit.Test;
 
 import static java.lang.System.out;
@@ -76,30 +77,6 @@ public class LinkedListCycleII {
         }
 //        out.println("ptr1: " + ptr1 + ", ptr2: " + ptr2);
         return ptr1;
-    }
-
-    class ListNode {
-        int val;
-        int index;
-        ListNode next;
-        ListNode(int x, int index) {
-            val = x;
-            this.index = index;
-            next = null;
-        }
-
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder().append("(").append(val).append(",").append(index).append(")").append("=>");
-            ListNode next = this.next;
-            int i = 0;
-            while (next != null && i < 15) {
-                sb.append("(").append(next.val).append(",").append(next.index).append(")").append("=>");
-                next = next.next;
-                i++;
-            }
-            return sb.toString();
-        }
     }
 
     private ListNode genNode(int[] nums, int pos) {
