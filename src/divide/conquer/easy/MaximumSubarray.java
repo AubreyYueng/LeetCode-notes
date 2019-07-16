@@ -3,6 +3,7 @@ package divide.conquer.easy;
 import org.junit.Test;
 
 import static java.lang.System.out;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Yiyun On 2019/7/15 04:06
@@ -92,13 +93,13 @@ public class MaximumSubarray {
 
     @Test
     public void case1() {
-        out.println(maxSubArray(new int[]{-2,1,-3,4,-1,2,1,-5,4}));
+        assertEquals(6, (maxSubArray(new int[]{-2,1,-3,4,-1,2,1,-5,4})));
     }
 
     @Test
     public void case2() {
         int[] arr = {-2,1,-3,4,-1,2,1,-5,4};
-        out.println(maxSubArraySum(arr, 0, arr.length-1));
+        assertEquals(6, maxSubArraySum(arr, 0, arr.length-1));
     }
 
 
