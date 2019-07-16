@@ -30,7 +30,7 @@ public class ListNode {
         return sb.toString();
     }
 
-    public static ListNode genNode(int[] nums) {
+    public static ListNode genNode(int... nums) {
         if (nums.length == 0)
             return null;
 
