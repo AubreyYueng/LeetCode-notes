@@ -2,6 +2,8 @@ package binary.search.hard;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static java.lang.System.out;
 import static org.junit.Assert.assertEquals;
 
@@ -39,6 +41,9 @@ import static org.junit.Assert.assertEquals;
  * TODO:    st==e===i1--e---i2--e (e for entrance, i for intersect, st for start;)
  * TODO:    So Range(st,e) = Range(i1,e)
  *
+ * TODO: binary search method: https://www.acwing.com/solution/acwing/content/693/
+ * TODO: see #binaryFindDuplicate, time complexity is O(nlogN)
+ *
  */
 public class FindDuplicateNumber {
 
@@ -66,14 +71,28 @@ public class FindDuplicateNumber {
         return ptr1;
     }
 
+    public int binaryFindDuplicate(int[] nums) {
+        int low = 1;
+        int high = nums.length-1;
+        while (low < high) {
+            int mid = (low + high) / 2;
+            int countByLowerThanMid = (int)Arrays.stream(nums).filter(n -> n <= mid).count();
+            if (countByLowerThanMid > mid-low+1)
+                high = mid;
+            else
+                low = mid + 1;
+        }
+        return low;
+    }
+
     @Test
     public void case1() {
-        assertEquals(2, findDuplicate(new int[]{1,3,5,2,2,6,4}));
+        assertEquals(2, binaryFindDuplicate(new int[]{1,3,5,2,2,6,4}));
     }
 
     @Test
     public void case2() {
-        assertEquals(3, findDuplicate(new int[]{3,1,3,4,2}));
+        assertEquals(3, binaryFindDuplicate(new int[]{3,1,3,4,2}));
     }
 
 
