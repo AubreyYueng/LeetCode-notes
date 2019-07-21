@@ -46,6 +46,57 @@ public class ReverseLinkedListII {
         return prev;
     }
 
+    public ListNode revisedRecursiveReverseBetween(ListNode head, int m, int n) {
+        new ReviseRecursive(head, m, n).reverse(head);
+        return head;
+    }
+
+    private static class ReviseRecursive {
+        private ListNode low;
+        private int threshold;
+        private int m;
+        private int n;
+
+        ReviseRecursive(ListNode low, int m, int n) {
+            this.low = low;
+            this.m = m;
+            this.n = n;
+            this.threshold = n - (m + n + 1) / 2 + 1;
+        }
+
+        private void reverse(ListNode high) {
+            revisedRecursiveReverseBetween(high, m, n);
+        }
+
+        /**
+         * TODO: re-think about: if threshold is not set, what will happen
+         */
+        private void revisedRecursiveReverseBetween(ListNode high, int m, int n) {
+            if (n == 1) return;
+
+            if (m > 1) {
+                low = low.next;
+                m--;
+            }
+            if (n > 1) {
+                high = high.next;
+                n--;
+            }
+
+            revisedRecursiveReverseBetween(high, m, n);
+            if (n <= threshold) {
+                int valueLowTmp = low.val;
+                low.val = high.val;
+                high.val = valueLowTmp;
+                this.low = this.low.next;
+            }
+        }
+
+    }
+
+    /**
+     * Leet Code Recursive Solution
+     */
     public ListNode recursivelyReverseBetween(ListNode head, int m, int n) {
         new RecursiveSample(head).recurseAndReverse(head, m, n);
         return head;
@@ -112,7 +163,14 @@ public class ReverseLinkedListII {
     }
 
     @Test
-    public void recursivelyCase1() {
+    public void recursivelySampleCase1() {
+        assertEquals(
+                "7=>9=>8=>1=>10=>2=>6=>",
+                revisedRecursiveReverseBetween(ListNode.genNode(7,9,2,10,1,8,6), 3, 6).toStr());
+    }
+
+    @Test
+    public void recursivelyRevisedCase1() {
         assertEquals(
                 "7=>9=>8=>1=>10=>2=>6=>",
                 recursivelyReverseBetween(ListNode.genNode(7,9,2,10,1,8,6), 3, 6).toStr());
