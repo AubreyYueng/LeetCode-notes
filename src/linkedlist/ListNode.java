@@ -30,6 +30,18 @@ public class ListNode {
         return sb.toString();
     }
 
+    public String toStr() {
+        StringBuilder sb = new StringBuilder().append(val).append("=>");
+        ListNode next = this.next;
+        int i = 0;
+        while (next != null && i < 15) {
+            sb.append(next.val).append("=>");
+            next = next.next;
+            i++;
+        }
+        return sb.toString();
+    }
+
     public static ListNode genNode(int... nums) {
         if (nums.length == 0)
             return null;
