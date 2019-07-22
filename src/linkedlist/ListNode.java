@@ -1,7 +1,5 @@
 package linkedlist;
 
-import linkedlist.medium.LinkedListCycleII;
-
 /**
  * Created by Yiyun On 2019/7/14 22:52
  */
@@ -10,6 +8,15 @@ public class ListNode {
     public int val;
     public int index;
     public ListNode next;
+
+    public ListNode(int val, ListNode next) {
+        this.val = val;
+        this.next = next;
+    }
+
+    public ListNode(int val) {
+        this.val = val;
+    }
 
     public ListNode(int x, int index) {
         val = x;

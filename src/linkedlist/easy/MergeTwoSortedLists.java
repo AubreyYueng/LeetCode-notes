@@ -1,6 +1,7 @@
 package linkedlist.easy;
 
 
+import linkedlist.ListNode;
 import org.junit.Test;
 
 import static java.lang.System.out;
@@ -8,7 +9,8 @@ import static java.lang.System.out;
 /**
  * Created by Yiyun on 2019/7/4 17:03
  *
- * No. 21 Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes of the first two lists.
+ * No. 21 Merge two sorted linked lists and return it as a new list.
+ * The new list should be made by splicing together the nodes of the first two lists.
  *
  * Example:
  *
@@ -54,28 +56,6 @@ public class MergeTwoSortedLists {
         }
     }
 
-    private class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            this.val = x;
-        }
-
-        ListNode(int val, ListNode next) {
-            this.val = val;
-            this.next = next;
-        }
-    }
-
-    private static void print(ListNode node) {
-        ListNode current = node;
-        while (current != null) {
-            out.print(current.val + "->");
-            current = current.next;
-        }
-    }
-
     /** l: left; r: right; {l1},{l2}
      * (l1->2->l4),(r1->3->r4)
      * l1 -> (2->l4),(r1->3->r4)
@@ -112,7 +92,7 @@ public class MergeTwoSortedLists {
                 new ListNode(1, new ListNode(2, new ListNode(4))),
                 new ListNode(1, new ListNode(3, new ListNode(4)))
         );
-        print(listNode);
+        out.println(listNode.toStr());
     }
 
 
