@@ -27,6 +27,9 @@ public class TreeNode {
         for (int i = 1; i < values.length; ) {
             List<TreeNode> nextLevel = new LinkedList<>();
             for (TreeNode treeNode : currentLevel) {
+                if (treeNode == null)
+                    continue;
+
                 Integer leftVal = values[i];
                 Integer rightVal = i+1 < values.length ? values[i+1] : null;
                 TreeNode left = leftVal == null ? null : new TreeNode(leftVal);
