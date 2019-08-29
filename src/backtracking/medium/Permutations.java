@@ -32,11 +32,11 @@ public class Permutations {
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> results = new LinkedList<>();
         boolean[] used = new boolean[nums.length];
-        dfs(results, nums, used, 0, new LinkedList<>());
+        dfs(results, nums, used, new LinkedList<>());
         return results;
     }
 
-    private void dfs(List<List<Integer>> results, int[] nums, boolean[] used, int idx, List<Integer> tmp) {
+    private void dfs(List<List<Integer>> results, int[] nums, boolean[] used, List<Integer> tmp) {
         if (tmp.size() == nums.length) {
             results.add(tmp);
             return;
@@ -48,7 +48,7 @@ public class Permutations {
             used[i] = true;
             List<Integer> newTmp = new LinkedList<>(tmp);
             newTmp.add(nums[i]);
-            dfs(results, nums, used, i, newTmp);
+            dfs(results, nums, used, newTmp);
             used[i] = false;
         }
     }
