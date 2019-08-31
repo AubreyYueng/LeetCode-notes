@@ -76,9 +76,13 @@ public class MaximumSubarray_DivideConquer {
         if (low == high)
             return arr[low];
         int mid = (low + high)/2;
-        return Math.max(Math.max(maxSubArraySum(arr, low, mid),
-                maxSubArraySum(arr, mid+1, high)),
-                maxCrossingSum(arr, low, mid, high));
+        return Math.max(
+                Math.max(
+                        maxSubArraySum(arr, low, mid),
+                        maxSubArraySum(arr, mid+1, high)
+                ),
+                maxCrossingSum(arr, low, mid, high)
+        );
     }
 
     @Test
