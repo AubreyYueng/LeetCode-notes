@@ -46,19 +46,21 @@ public class MaximumSubarray_DivideConquer {
     public static int maxCrossingSum(int arr[], int low,
                               int mid, int high) {
         // Include elements on left of mid.
-        int sum = 0;
-        int leftSum = Integer.MIN_VALUE;
-        for (int i = mid; i >= low; i--) {
-            sum = sum + arr[i];
+        // 求以 mid 为结尾的最大连续子序列的和是多少
+        int sum = arr[mid];
+        int leftSum = arr[mid];
+        for (int i = mid-1; i >= low; i--) {
+            sum += arr[i];
             if (sum > leftSum)
                 leftSum = sum;
         }
 
         // Include elements on right of mid
-        sum = 0;
-        int rightSum = Integer.MIN_VALUE;
-        for (int i = mid + 1; i <= high; i++) {
-            sum = sum + arr[i];
+        // 求以 mid+1 为开头的最大连续子序列的和是多少
+        sum = arr[mid+1];
+        int rightSum = arr[mid+1];
+        for (int i = mid + 2; i <= high; i++) {
+            sum += arr[i];
             if (sum > rightSum)
                 rightSum = sum;
         }
