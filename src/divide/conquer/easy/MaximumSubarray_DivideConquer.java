@@ -21,30 +21,20 @@ import static org.junit.Assert.assertEquals;
  * If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach,
  * which is more subtle.
  *
- * TODO: 2 solutions, see codes demonstrated below
+ * TODO: dynamic programming solution see {@link dynamicprogramming.easy.MaximumSubarray_DP}
+ *
+ * (分治) O(nlogn)
+ * 1. 考虑区间 [l, r] 内的答案如何计算，令 mid = (l + r) / 2，则该区间的答案由三部分取最大值，分别是：
+ *  (1). 区间 [l, mid] 内的答案（递归计算）。
+ *  (2). 区间 [mid + 1, r] 内的答案（递归计算）。
+ *  (3). 跨越 mid和mid+1 的连续子序列。
+ * 2. 其中，第(3)部分只需要从 mid 开始向 l 找连续的最大值，以及从 mid+1 开始向 r 找最大值即可，在线性时间内可以完成。
+ * 3. 递归终止条件显然是 l==r ，此时直接返回 nums[l]。
+ * 时间复杂度
+ * 由递归主定理 S(n)=2S(n/2)+O(n)，解出总时间复杂度为 O(nlogn)。
+ * 或者每一层时间复杂度是 O(n)，总共有 O(logn) 层，故总时间复杂度是 O(nlogn)。
  */
-public class MaximumSubarray {
-
-    /*-------------- regular solution ------------*/
-    public int maxSubArray(int[] nums) {
-//        out.println("nums: " + Arrays.toString(nums));
-
-        int maxSum = nums[0];
-        int maxCurrent = nums[0];
-        for(int i=1; i<nums.length; i++) {
-//            out.println("maxSum: " + maxSum + ", maxCurrent: " + maxCurrent);
-
-            maxCurrent = Math.max(nums[i], maxCurrent+nums[i]);
-//            out.println("maxCurrent: " + maxCurrent);
-            if(maxCurrent>maxSum) {
-                maxSum = maxCurrent;
-            }
-        }
-//        out.println("maxSum: " + maxSum + ", maxCurrent: " + maxCurrent);
-        return maxSum;
-    }
-
-    /*--------------- dp solution O--------------*/
+public class MaximumSubarray_DivideConquer {
 
     /**
      * recurrence : T(n) = 2T(n/2) + O(n);
@@ -89,11 +79,6 @@ public class MaximumSubarray {
         return Math.max(Math.max(maxSubArraySum(arr, low, mid),
                 maxSubArraySum(arr, mid+1, high)),
                 maxCrossingSum(arr, low, mid, high));
-    }
-
-    @Test
-    public void case1() {
-        assertEquals(6, (maxSubArray(new int[]{-2,1,-3,4,-1,2,1,-5,4})));
     }
 
     @Test
