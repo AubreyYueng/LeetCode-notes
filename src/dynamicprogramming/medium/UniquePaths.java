@@ -48,9 +48,33 @@ public class UniquePaths {
         return f[m-1][n-1];
     }
 
+    public int uniquePaths_(int m, int n) {
+        int[][] f = new int[m][n];
+        f[0][0] = 1;
+
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if (i == 0 && j == 0)
+                    continue;
+
+                f[i][j] = 0;
+                if (i > 0)
+                    f[i][j] += f[i-1][j];
+                if (j > 0)
+                    f[i][j] += f[i][j-1];
+            }
+        }
+        return f[m-1][n-1];
+    }
+
     @Test
     public void case1() {
         assertEquals(28, uniquePaths(7, 3));
+    }
+
+    @Test
+    public void case2() {
+        assertEquals(28, uniquePaths_(7, 3));
     }
 
 }
