@@ -28,7 +28,7 @@ import static org.junit.Assert.assertEquals;
  * Input: m = 7, n = 3
  * Output: 28
  *
- * TODO: f(i,j) = f(i-1, j) + f(i, j-1). 即左上步数相加
+ * TODO: f(i,j) = f(i-1, j) + f(i, j-1)
  */
 public class UniquePaths {
 
