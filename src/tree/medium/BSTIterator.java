@@ -34,7 +34,7 @@ import java.util.Stack;
  */
 public class BSTIterator {
 
-    private static LinkedList<Integer> nodes;
+    private LinkedList<Integer> nodes;
 
     public BSTIterator(TreeNode root) {
         nodes = new LinkedList<>();
