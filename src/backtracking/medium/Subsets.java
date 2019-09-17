@@ -29,7 +29,7 @@ import java.util.List;
  *  []
  * ]
  *
- * TODO: f(3) = {(3,f(2)), f(2), (3,f(3)), f(3)}
+ * TODO: bcs list is modifiable, so res.add(new LinkedList<>(list))
  * TODO: bit manipulation
  */
 public class Subsets {
@@ -42,6 +42,14 @@ public class Subsets {
         return res;
     }
 
+    /**
+     *       1 -> 1,2 -> 1,2,3
+     *            1,2 ___/pop3
+     *      1 ___/pop2
+     *      1 ----------->1,3
+     *    _______________/pop1,pop3
+     *            2  ->  2,3
+     */
     private void dfs(int index, int[] nums, LinkedList<Integer> list, List<List<Integer>> res) {
         res.add(new LinkedList<>(list));
 
