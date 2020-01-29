@@ -30,18 +30,18 @@ public class CombinationSumIII {
 
     public List<List<Integer>> combinationSum3(int k, int n) {
         List<List<Integer>> res = new LinkedList<>();
-        dfs(1, k, n, n, res, new LinkedList<>());
+        dfs(1, k, n, res, new LinkedList<>());
         return res;
     }
 
-    private void dfs(int start, int k, int n, int target, List<List<Integer>> res, LinkedList<Integer> tmp) {
+    private void dfs(int start, int k, int target, List<List<Integer>> res, LinkedList<Integer> tmp) {
         if (tmp.size() == k && target == 0)
             res.add(new LinkedList<>(tmp));
         for (int i = start; i < 10; i++) {
             if (target < i)
                 break;
             tmp.add(i);
-            dfs(i+1, k, n, target-i, res, tmp);
+            dfs(i+1, k, target-i, res, tmp);
             tmp.removeLast();
         }
     }
