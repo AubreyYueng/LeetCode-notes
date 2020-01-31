@@ -1,7 +1,5 @@
 package dynamicprogramming.medium;
 
-import java.util.Arrays;
-
 /**
  * Created by Yiyun On 2020/1/28 11:08
  *
