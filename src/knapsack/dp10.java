@@ -23,7 +23,7 @@ public class dp10 {
     public int knapsack(int W, int wt[], int val[]) {
         // K(n, W): maximum weight gain by n items and W capacity
         // K(n, W) = max(
-        //      K(n-1, W),          nth excluded, not enough capacity
+        //      K(n-1, W),          nth excluded, (also when not enough capacity)
         //      K(n-1, W-w_i)+v_i   nth included
         // )
 
