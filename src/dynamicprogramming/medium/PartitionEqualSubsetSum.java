@@ -6,7 +6,7 @@ package dynamicprogramming.medium;
  * 416. Partition Equal Subset Sum
  * https://leetcode.com/problems/partition-equal-subset-sum/
  *
- * knapsack problem
+ * 0-1 knapsack problem
  */
 public class PartitionEqualSubsetSum {
 
