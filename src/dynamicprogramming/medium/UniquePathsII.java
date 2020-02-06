@@ -37,6 +37,34 @@ import static org.junit.Assert.assertEquals;
  */
 public class UniquePathsII {
 
+    // less space
+    public int uniquePathsWithObstacles_review20200206(int[][] obstacleGrid) {
+        // f(i, j) = f(i, j-1) + f(i-1, j);
+        if (obstacleGrid == null || obstacleGrid.length == 0 || obstacleGrid[0].length == 0)
+            return 0;
+        int row = obstacleGrid.length;
+        int col = obstacleGrid[0].length;
+
+        int[] res = new int[col+1];
+        res[0] = 1;
+        for (int r = 1; r <= row; r++) {
+            int[] curr = new int[col+1];
+            curr[0] = r==1 ? res[0] : 0;
+
+            for (int c = 1; c <= col; c++) {
+                int n = obstacleGrid[r-1][c-1];
+                if (n == 1)
+                    curr[c] = 0;
+                else {
+                    curr[c] = curr[c-1] + res[c];
+                }
+            }
+            res = curr;
+        }
+
+        return res[col];
+    }
+
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
         int rowCnt = obstacleGrid.length;
         int colCnt = obstacleGrid[0].length;
