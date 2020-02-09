@@ -26,6 +26,21 @@ import static org.junit.Assert.assertEquals;
  */
 public class HouseRobber {
 
+    public int rob_review20200208(int[] nums) {
+        if (nums == null || nums.length == 0)
+            return 0;
+
+        // dp(i): max amount of money given first i nums
+        // dp(i) = max(dp(i-2)+nums[i], dp(i-1))
+        int len = nums.length;
+        int[] dp = new int[len+2];
+        for(int i = 2; i < len+2; i++) {
+            int n = nums[i-2];
+            dp[i] = Math.max(dp[i-2]+n, dp[i-1]);
+        }
+        return dp[len+1];
+    }
+
     /**
      * f(n): max of rob n;
      * g(n): max of not rob n;
