@@ -10,6 +10,7 @@ package dynamicprogramming.medium;
 public class LongestCommonSubsequence {
 
     public int longestCommonSubsequence(String text1, String text2) {
+        // f(i, j): longest common subseq length between first i letters of text1 and first j letters of text2
         // f(i, j) = max(f(i, j-1), f(i-1, j)); if(text1[i] != text2[j])
         //         = f(i-1, j-1) + 1;           if(text1[i] == text2[j])
         // think about the graph similar to a matrix
