@@ -42,6 +42,44 @@ import static org.junit.Assert.assertEquals;
  */
 public class EditDistance {
 
+    public int minDistance_review20200208(String word1, String word2) {
+        // dp(i, j): min distance to make first i chars of word1 to become first j chars of word2
+        // dp(i, j) = min(
+        //              dp(i-1,j-1);  if word1[i]==word2[j], then i++,j++
+        //              dp(i-1,j-1)+1; replace, then i++,j++
+        //              dp(i-1,j-1)+1; delete, then i++
+        //              dp(i-1,j-1)+1; insert, then j++
+        //            )
+        // the index operation is too complex above, we might switch our thoughts to:
+        // dp(i, j) = min(
+        //                  dp(i-1,j)+1,                    need to delete ch_i
+        //                  dp(i,j-1)+1,                    need to insert a ch_j
+        //                  dp(i-1,j-1)+(ch_i==ch_j?0:1)    replace if equal
+        //               )
+        int row = word1.length();
+        int col = word2.length();
+        int[] dp = new int[col+1];
+        for(int j = 0; j <= col; j++) dp[j]=j;  // Be careful about the initilization
+
+        for (int i = 1; i <= row; i++) {
+            int[] curr = new int[col+1];
+            curr[0] = i;                        // Be careful about the initilization
+            char chi = word1.charAt(i-1);
+            for (int j = 1; j <= col; j++) {
+                char chj = word2.charAt(j-1);
+                curr[j] = Math.min(
+                        Math.min(
+                                dp[j]+1,
+                                curr[j-1]+1
+                        ),
+                        dp[j-1]+(chi==chj?0:1)
+                );
+            }
+            dp = curr;
+        }
+        return dp[col];
+    }
+
     public int minDistance(String word1, String word2) {
         int m = word1.length();
         int n = word2.length();
