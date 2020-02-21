@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class RemoveInvalidParentheses {
 
+    // https://www.youtube.com/watch?v=2k_rS_u6EBk
+    // last_i and last_j is to record at where the prefix is valid
     public static List<String> removeInvalidParentheses(String s) {
         List<String> res = new ArrayList<>();
         char[] check = new char[]{'(', ')'};
