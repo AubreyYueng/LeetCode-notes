@@ -31,13 +31,13 @@ import static org.junit.Assert.assertEquals;
  *    For a directed graph: O(V) + O(E) = O(V + E)
  *    For a undirected graph: O(V) + O (2E) ~ O(V + E)
  */
-public class articulationPoints {
+public class ArticulationPoints {
 
     private Map<Integer, List<Integer>> adj;
 
     /**
      * low[u] = min(disc[u], disc[w]) where w is an ancestor of u and there is a back edge from some descendant of u to w.
-     * 所有反向边的后代结点，指向的最小祖先 no
+     * 所有反向边的后代结点(包括自己)，指向的最小祖先(no)
      */
     private int[] low;
     private int currNo = 0;
@@ -57,7 +57,10 @@ public class articulationPoints {
     private Set<Integer> getAps() {
         if (this.aps == null) {
             this.aps = new HashSet<>();
-            dfs(adj.keySet().iterator().next());
+            for (Integer v : adj.keySet()) {    // iteration times > 1 when disconnected graph
+                if (no[v] == 0)
+                    dfs(v);
+            }
         }
 
         return this.aps;
