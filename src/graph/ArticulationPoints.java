@@ -3,6 +3,7 @@ package graph;
 import org.junit.Test;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 import static org.junit.Assert.assertEquals;
 
@@ -54,12 +55,12 @@ public class ArticulationPoints {
         this.aps = null;
     }
 
-    private Set<Integer> getAps() {
+    private Set<Integer> getAps(Consumer<Integer> dfs) {
         if (this.aps == null) {
             this.aps = new HashSet<>();
             for (Integer v : adj.keySet()) {    // iteration times > 1 when disconnected graph
                 if (no[v] == 0)
-                    dfs(v);
+                    dfs.accept(v);
             }
         }
 
@@ -88,6 +89,27 @@ public class ArticulationPoints {
         }
     }
 
+    // Here we don't need to store header(instead of parent[]), we use pre==v to check if it's root(instead of using parent[v]==null)
+    private void dfs(int v, int pre) {
+        no[v] = ++currNo;
+        low[v] = no[v];
+
+        int chdCnt = 0;
+        for (Integer chd : adj.get(v)) {
+            chdCnt++;
+            if (no[chd] == 0) {   // unvisited
+                dfs(chd, v);
+
+                low[v] = Math.min(low[v], low[chd]);
+                // be careful about the conditions
+                if ((pre==v && chdCnt>=2) || (pre!=v && low[chd]>=no[v]))
+                    aps.add(v);
+            } else if (pre != chd) {
+                low[v] = Math.min(low[v], no[chd]);
+            }
+        }
+    }
+
     @Test
     public void case1() {
         int[][] pairs = {{1, 0}, {0, 2}, {0, 3}, {3, 4}};
@@ -109,7 +131,10 @@ public class ArticulationPoints {
 
     private void verify(String expected, int[][] pairs) {
         init(UndirectedGraph.init(pairs));
-        assertEquals(expected, Arrays.toString(getAps().toArray()));
+        assertEquals(expected, Arrays.toString(getAps(this::dfs).toArray()));       // use parent[]
+
+        init(UndirectedGraph.init(pairs));
+        assertEquals(expected, Arrays.toString(getAps(v -> dfs(v, v)).toArray()));  // use 'pre' instead of parent[]
     }
 
     private static class UndirectedGraph {
