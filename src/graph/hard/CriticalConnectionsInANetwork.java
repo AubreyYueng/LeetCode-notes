@@ -11,6 +11,8 @@ import static org.junit.Assert.assertEquals;
  *
  * 1192. Critical Connections in a Network
  * https://leetcode.com/problems/critical-connections-in-a-network/
+ *
+ * It's slightly different from finding Articulation Points
  */
 public class CriticalConnectionsInANetwork {
 
@@ -22,7 +24,7 @@ public class CriticalConnectionsInANetwork {
         private Map<Integer, List<Integer>> adj;    // adjacent list
         private int[] low;
         private int[] disc;
-        private int[] parent;
+        private int[] parent;       // here we can substitute parent[] by using dfs(v, pre)
         private int times = 0;
 
         private List<List<Integer>> ans;
@@ -43,15 +45,13 @@ public class CriticalConnectionsInANetwork {
             disc[v] = times;
             low[v] = times;
 
-            int chdCnt = 0;
             for(Integer u: adj.get(v)) {
-                chdCnt++;
                 if (disc[u] == 0) { // unvisited
                     parent[u] = v;
                     dfs(u);
 
                     low[v] = Math.min(low[u], low[v]);
-                    if ((parent[v]==-1 && chdCnt > 1)||(parent[v]!=-1 && low[u] > disc[v]))
+                    if (low[u] > disc[v])       // Be careful: don't use equal
                         ans.add(Arrays.asList(u, v));
                 } else if (parent[v] != u) {
                     low[v] = Math.min(low[v], disc[u]);
@@ -83,6 +83,12 @@ public class CriticalConnectionsInANetwork {
     public void case1() {
         int[][] pairs = {{0, 1}, {1, 2}, {2, 0}, {1, 3}};
         verify("[[3, 1]]", 4, pairs);
+    }
+
+    @Test
+    public void case2() {
+        int[][] pairs = {{1,0},{2,0},{3,2},{4,2},{4,3},{3,0},{4,0}};
+        verify("[[1, 0]]", 5, pairs);
     }
 
     private void verify(String expected, int n, int[][]pairs) {
