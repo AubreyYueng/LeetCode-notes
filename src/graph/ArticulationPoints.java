@@ -1,4 +1,4 @@
-package tarjan;
+package graph;
 
 import org.junit.Test;
 
@@ -40,8 +40,8 @@ public class ArticulationPoints {
      * 所有反向边的后代结点(包括自己)，指向的最小祖先(no)
      */
     private int[] low;
-    private int currNo = 0;
-    private int[] no;           // visit order in dfs tree
+    private int currNo = 0;     // same as 'times' in most tutorial
+    private int[] no;           // visit order in dfs tree, same as 'disc[]' in most tutorial
     private Integer[] parent;
     private Set<Integer> aps;   // Articulation Points
 
@@ -91,26 +91,24 @@ public class ArticulationPoints {
     @Test
     public void case1() {
         int[][] pairs = {{1, 0}, {0, 2}, {0, 3}, {3, 4}};
-        init(UndirectedGraph.init(pairs));
-        verify("[0, 3]");
+        verify("[0, 3]", pairs);
     }
 
     @Test
     public void case2() {
         int[][] pairs = {{0, 1}, {1, 2}, {2, 3}};
-        init(UndirectedGraph.init(pairs));
-        verify("[1, 2]");
+        verify("[1, 2]", pairs);
     }
 
     @Test
     public void case3() {
         int[][] pairs = {{0, 1}, {1, 2}, {2, 0}, {1, 3}, {1, 4}, {1, 6}, {3, 5}, {4, 5}};
-        init(UndirectedGraph.init(pairs));
-        verify("[1]");
+        verify("[1]", pairs);
     }
 
 
-    private void verify(String expected) {
+    private void verify(String expected, int[][] pairs) {
+        init(UndirectedGraph.init(pairs));
         assertEquals(expected, Arrays.toString(getAps().toArray()));
     }
 
