@@ -1,4 +1,4 @@
-package graph;
+package graph.tarjan;
 
 import org.junit.Test;
 

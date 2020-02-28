@@ -1,4 +1,4 @@
-package graph;
+package graph.tarjan;
 
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
  *  3. If we can find the head of such subtrees, we can print/store all the nodes in that subtree (including head) and that will be one SCC.
  *  4. There is no back edge from one SCC to another (There can be cross edges, but cross edges will not be used while processing the graph).
  */
-public class FindStronglyConnectedComponents {
+public class StronglyConnectedComponents {
 
     private Map<Integer, List<Integer>> adj;
     private int[] low;

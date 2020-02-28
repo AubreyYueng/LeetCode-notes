@@ -1,4 +1,4 @@
-package graph.hard;
+package graph.tarjan;
 
 import org.junit.Test;
 
@@ -11,10 +11,16 @@ import static org.junit.Assert.assertEquals;
  *
  * 1192. Critical Connections in a Network
  * https://leetcode.com/problems/critical-connections-in-a-network/
+ * https://www.geeksforgeeks.org/bridge-in-a-graph/
  *
- * It's slightly different from finding Articulation Points
+ * This is equal to finding bridge in a graph
+ * The condition for an edge (u, v) to be a bridge is, “low[v] > disc[u]”.
+ *
+ * Definition of bridge:
+ * An edge in an undirected connected graph is a bridge iff removing it disconnects the graph.
+ * For a disconnected undirected graph, a bridge is an edge removing which increases number of disconnected components
  */
-public class CriticalConnectionsInANetwork {
+public class Bridges {
 
     public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
         return new APHelper(connections, n).getAp();
