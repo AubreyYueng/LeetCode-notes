@@ -1,5 +1,6 @@
 package graph.tarjan;
 
+import graph.tarjan.entity.UndirectedGraph;
 import org.junit.Test;
 
 import java.util.*;
@@ -89,7 +90,7 @@ public class ArticulationPoints {
         }
     }
 
-    // Here we don't need to store header(instead of parent[]), we use pre==v to check if it's root(instead of using parent[v]==null)
+    // Here we don't need to store header(parent[]), we use pre==v to check if it's root(instead of parent[v]==null)
     private void dfs(int v, int pre) {
         no[v] = ++currNo;
         low[v] = no[v];
@@ -135,27 +136,5 @@ public class ArticulationPoints {
 
         init(UndirectedGraph.init(pairs));
         assertEquals(expected, Arrays.toString(getAps(v -> dfs(v, v)).toArray()));  // use 'pre' instead of parent[]
-    }
-
-    private static class UndirectedGraph {
-        Map<Integer, List<Integer>> adj = new HashMap<>();
-        int largest = Integer.MIN_VALUE;
-
-        static UndirectedGraph init(int[]... pairs) {
-            UndirectedGraph graph = new UndirectedGraph();
-            for (int[] p : pairs) {
-                graph.addEdge(p[0], p[1]);
-            }
-            return graph;
-        }
-
-        void addEdge(int v1, int v2) {
-            adj.putIfAbsent(v1, new LinkedList<>());
-            adj.putIfAbsent(v2, new LinkedList<>());
-            adj.get(v1).add(v2);
-            adj.get(v2).add(v1);
-
-            this.largest = Math.max(largest, Math.max(v1, v2));
-        }
     }
 }
