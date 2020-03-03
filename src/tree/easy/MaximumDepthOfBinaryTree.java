@@ -22,15 +22,17 @@ public class MaximumDepthOfBinaryTree {
         queue.add(new Pair<>(root, depth));
         while (!queue.isEmpty()) {
             Pair<TreeNode, Integer> curr = queue.poll();
+
             TreeNode h = curr.getKey();
+            if (h == null)
+                continue;   // or we verify before add to queue like in '111. Minimum Depth of Binary Tree'
+
             depth = curr.getValue();
             if (h.left == null && h.right == null)
                 continue;       // <- the only difference between minDepth and maxDepth
             depth++;
-            if (h.left != null)
-                queue.add(new Pair<>(h.left, depth));
-            if (h.right != null)
-                queue.add(new Pair<>(h.right, depth));
+            queue.add(new Pair<>(h.left, depth));
+            queue.add(new Pair<>(h.right, depth));
 
         }
         return depth;
