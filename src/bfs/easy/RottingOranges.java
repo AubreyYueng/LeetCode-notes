@@ -1,5 +1,7 @@
 package bfs.easy;
 
+import javafx.util.Pair;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -45,6 +47,52 @@ public class RottingOranges {
                     int nPos = nr * col + nc;
                     queue.add(nPos);
                     depth.put(nPos, dep+1);
+                    ans = dep+1;
+                }
+            }
+        }
+
+        for(int[] nRow: grid) {
+            for(int n: nRow) {
+                if (n == 1)
+                    return -1;
+            }
+        }
+
+        return ans;
+    }
+
+    public int orangesRotting_review20200303(int[][] grid) {
+        // here we use LinkedList<Pair<Integer, Integer>> queue to combine the original queue with map of depth
+        int[] dr = {-1, 0, 1, 0};
+        int[] dc = {0, -1, 0, 1};
+
+        int row = grid.length;
+        int col = grid[0].length;
+
+        LinkedList<Pair<Integer, Integer>> queue = new LinkedList<>();
+        for (int r = 0; r < row; r++) {
+            for (int c = 0; c < col; c++) {
+                if (grid[r][c] != 2) continue;
+                int pos = r * col + c;
+                queue.add(new Pair<>(pos, 0));
+            }
+        }
+
+        int ans = 0;
+        while(!queue.isEmpty()) {
+            Pair<Integer, Integer> node = queue.pop();
+            int pos = node.getKey();
+            int r = pos / col;
+            int c = pos % col;
+            int dep = node.getValue();
+            for(int d = 0; d < 4; d++) {
+                int nr = r + dr[d];
+                int nc = c + dc[d];
+                if (0 <= nr && nr < row && 0 <= nc && nc < col && grid[nr][nc] == 1) {
+                    grid[nr][nc] = 2;
+                    int nPos = nr * col + nc;
+                    queue.add(new Pair<>(nPos, dep+1));
                     ans = dep+1;
                 }
             }
