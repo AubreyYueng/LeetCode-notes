@@ -24,9 +24,34 @@ public class SearchA2DMatrixII {
         // 模板: https://www.acwing.com/blog/content/31/
         // 没有duplicate且寻找==target的，找到就即刻返回(无需返回移动指针), 最后比较nums[l]和target, 寻找第一个<=target的元素用模板1(275. H-Index II), 寻找最后一个<=target的元素用模板2(69. Sqrt(x))
         // 答案虽然落在左区间, 但mid有可能不是答案, 此时应该把[l, r]更新成 [l, mid - 1]，也就是需要让 r = mid - 1, 就用模板2
+
+        // time complexity: O(lg(n!)) = O(\sum_{k==1}^{n}lg(k))
+        // space: O(1)
         if (matrix == null || matrix.length==0 || matrix[0].length==0)
             return false;
         return new Helper(matrix, target).find();
+    }
+
+    public boolean searchMatrix_spacereduction(int[][] matrix, int target) {
+        // search space reduction solution
+        // time: O(n+m)
+        // space: O(1)
+        // starting from bottom left
+        if (matrix == null || matrix.length==0 || matrix[0].length==0)
+            return false;
+        int col = matrix[0].length;
+        int i = matrix.length-1;
+        int j = 0;
+        while (i >= 0 && j < col) {
+            int num = matrix[i][j];
+            if (num == target)
+                return true;
+            if (num < target)
+                j++;
+            else
+                i--;
+        }
+        return false;
     }
 
     private static class Helper {
