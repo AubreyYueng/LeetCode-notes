@@ -1,4 +1,4 @@
-package tree.hard;
+package bytedance;
 
 /**
  * Created by Yiyun On 2020/3/25 18:52
