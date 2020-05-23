@@ -52,7 +52,7 @@ public class ValidParentheses {
                 stack.push(curr);
             else {
                 Character prev = stack.isEmpty() ? 'x' : stack.pop();
-                if (!map.get(prev).equals(curr))
+                if (!curr.equals(map.get(prev)))
                     return false;
             }
         }
@@ -82,5 +82,10 @@ public class ValidParentheses {
     @Test
     public void case5() {
         assertTrue(isValid("{[]}"));
+    }
+
+    @Test
+    public void case6() {
+        assertFalse(isValid("]"));
     }
 }
