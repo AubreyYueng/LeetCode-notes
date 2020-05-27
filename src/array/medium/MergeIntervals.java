@@ -12,7 +12,22 @@ import java.util.*;
 public class MergeIntervals {
 
     public int[][] merge(int[][] intervals) {
-        return mergeInComponent(intervals);
+//        return mergeInComponent(intervals);
+        return mergeBySorting(intervals);
+    }
+
+    //  Other than the sort invocation, we do a simple linear scan of the list,
+    // so the runtime is dominated by the O(nlgn)O(nlgn) complexity of sorting
+    public int[][] mergeBySorting(int[][] intervals) {
+        Arrays.sort(intervals, Comparator.comparing(interval -> interval[0]));
+        LinkedList<int[]> res = new LinkedList<>();
+        for (int[] interval : intervals) {
+            if (res.isEmpty() || interval[0] > res.getLast()[1])
+                res.add(interval);
+            else
+                res.getLast()[1] = Math.max(res.getLast()[1], interval[1]);
+        }
+        return res.toArray(new int[][]{});
     }
 
     // Result: Memory Limit Exceeded!!!
