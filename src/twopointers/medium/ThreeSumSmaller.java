@@ -16,7 +16,8 @@ public class ThreeSumSmaller {
         int len = nums.length;
         int res = 0;
         for (int i = 0; i < len-2; i++) {
-            res += twoSumSmallerBinarySearch(i+1, nums, target-nums[i]);
+//            res += twoSumSmallerBinarySearch(i+1, nums, target-nums[i]);
+            res += twoSumSmallerTwoPointers(i+1, nums, target-nums[i]);
         }
         return res;
     }
@@ -24,7 +25,7 @@ public class ThreeSumSmaller {
     // O(nlogn)
     private int twoSumSmallerBinarySearch(int st, int[] nums, int target) {
         int res = 0;
-        for (int i = st; i < nums.length-1 && nums[i] <= (target)/2; i++) {
+        for (int i = st; i < nums.length-1 && nums[i] <= target/2; i++) {
             res += binarySearch(i, nums, target-nums[i])-i;
         }
         return res;
@@ -45,8 +46,24 @@ public class ThreeSumSmaller {
         return l;
     }
 
-    // O(n)
-    private int twoSumSmallerTwoPointers() {
-        return 0;
+    // O(n): it's equivalent to count by fixing the start index
+    private int twoSumSmallerTwoPointers(int st, int[] nums, int target) {
+        int l = st;
+        int h = nums.length-1;
+        int res = 0;
+        while (l < h) {
+            int lNum = nums[l];
+            if (lNum > target/2)
+                break;
+
+            int sum = lNum + nums[h];
+            if (sum >= target) {
+                h--;
+            } else {
+                res += h-l;
+                l++;
+            }
+        }
+        return res;
     }
 }
