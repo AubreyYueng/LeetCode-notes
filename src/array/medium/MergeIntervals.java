@@ -17,7 +17,7 @@ public class MergeIntervals {
     }
 
     //  Other than the sort invocation, we do a simple linear scan of the list,
-    // so the runtime is dominated by the O(nlgn)O(nlgn) complexity of sorting
+    // so the runtime is dominated by the O(nlgn) complexity of sorting
     public int[][] mergeBySorting(int[][] intervals) {
         Arrays.sort(intervals, Comparator.comparing(interval -> interval[0]));
         LinkedList<int[]> res = new LinkedList<>();
