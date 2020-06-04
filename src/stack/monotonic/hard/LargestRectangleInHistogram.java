@@ -1,4 +1,4 @@
-package monotonic.stack.hard;
+package stack.monotonic.hard;
 
 import org.junit.Test;
 
@@ -18,9 +18,9 @@ public class LargestRectangleInHistogram {
             return 0;
 
         LinkedList<Integer> stack = new LinkedList<>();
-        int bottom = -1;
+        int bottom = -1;        // because it's the number left next to index of zero
         stack.push(bottom);     // WARN: DON'T USE .add(), which means addLast!!!
-        int max = heights[0];
+        int max = heights[0];   // don't set 0
 
         for (int i = 0; i < heights.length; i++) {
             int cur = heights[i];
