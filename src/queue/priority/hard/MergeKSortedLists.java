@@ -1,4 +1,4 @@
-package linkedlist.hard;
+package queue.priority.hard;
 
 import linkedlist.ListNode;
 
@@ -23,14 +23,13 @@ public class MergeKSortedLists {
                 pq.add(l);
         }
 
-        // Remember this way of initialization to simplify the complexity!!!
+        // Remember this way of initialization to simplify everything!!!
         ListNode head = new ListNode(0);
         ListNode curr = head;
         while (!pq.isEmpty()) {
             // actually we don't need extra space here, simply we set tmp = pq.poll() is also ok.
             ListNode peek = pq.poll();
-            ListNode tmp = new ListNode(peek.val);
-            curr.next = tmp;
+            curr.next = new ListNode(peek.val);
             curr = curr.next;
 
             if (peek.next != null)
