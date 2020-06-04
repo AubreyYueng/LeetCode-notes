@@ -16,6 +16,34 @@ public class MeetingRoomsII {
         if (intervals == null || intervals.length == 0)
             return 0;
 
+        int len = intervals.length;
+        int[] st = new int[len];
+        int[] ed = new int[len];
+        for (int i = 0; i < intervals.length; i++) {
+            st[i] = intervals[i][0];
+            ed[i] = intervals[i][1];
+        }
+        Arrays.sort(st);
+        Arrays.sort(ed);
+
+        int edIdx = 0;
+        int res = 0;
+        for (int s : st) {
+            if (s < ed[edIdx])
+                res++;
+            else
+                edIdx++;
+        }
+
+        return res;
+    }
+
+
+    // using Priority Queue
+    public int minMeetingRooms_PQ(int[][] intervals) {
+        if (intervals == null || intervals.length == 0)
+            return 0;
+
         // sort by start time
         Arrays.sort(intervals, Comparator.comparing(i -> i[0]));
 
