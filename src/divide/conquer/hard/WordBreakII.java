@@ -29,10 +29,10 @@ public class WordBreakII {
 
         List<String> res = new LinkedList<>();
         for (int i = 1; i <= s.length(); i++) {
+            // unnecessary to continue
             if (i > maxLen)
                 break;
 
-            // if (0, i+1), could be IndexOutOfBound, so i begins from 1
             String prev = s.substring(0, i);
             if (!dict.contains(prev))
                 continue;

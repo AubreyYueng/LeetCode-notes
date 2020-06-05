@@ -13,6 +13,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class LargestRectangleInHistogram {
 
+    // monotonically increasing stack
     public int largestRectangleArea(int[] heights) {
         if (heights == null || heights.length == 0)
             return 0;
