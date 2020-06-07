@@ -1,4 +1,4 @@
-package sliding.window.medium;
+package twopointers.sliding.window.medium;
 
 import java.util.HashMap;
 import java.util.Map;

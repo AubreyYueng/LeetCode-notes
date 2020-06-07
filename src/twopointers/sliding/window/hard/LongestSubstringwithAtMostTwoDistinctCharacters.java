@@ -1,4 +1,4 @@
-package sliding.window.hard;
+package twopointers.sliding.window.hard;
 
 import org.junit.Test;
 

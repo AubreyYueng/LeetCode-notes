@@ -1,4 +1,4 @@
-package sliding.window.hard;
+package twopointers.sliding.window.hard;
 
 /**
  * Created by Yiyun On 2020/2/17 23:32

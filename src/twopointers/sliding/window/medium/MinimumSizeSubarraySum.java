@@ -1,4 +1,4 @@
-package sliding.window.medium;
+package twopointers.sliding.window.medium;
 
 /**
  * Created by Yiyun On 2020/2/17 22:09

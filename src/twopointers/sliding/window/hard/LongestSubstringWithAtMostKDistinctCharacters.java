@@ -1,9 +1,8 @@
-package sliding.window.hard;
+package twopointers.sliding.window.hard;
 
 import org.junit.Test;
 
 import java.util.*;
-import java.util.function.BinaryOperator;
 
 import static org.junit.Assert.assertEquals;
 
