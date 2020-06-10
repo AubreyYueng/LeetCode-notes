@@ -13,8 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class JumpGame {
 
     // nums[i] means we can arrive at all positions <= i+nums[i],
-    // thus we can update the furthest position through iteration between 0 to 'reach'
-    // while 'reach' is dynamically changed
+    // thus we can update 'reach' by iterating through 0 to 'reach'('reach' is dynamically changed)
     public boolean canJump(int[] nums) {
         int reach = nums[0];
         int len = nums.length;
