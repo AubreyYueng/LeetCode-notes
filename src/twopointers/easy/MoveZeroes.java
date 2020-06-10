@@ -7,6 +7,8 @@ package twopointers.easy;
  */
 public class MoveZeroes {
 
+    // fast pointer: find the non-0 elements
+    // slow pointer: store the non-0 elements
     public void moveZeroes(int[] nums) {
         int storeIdx = 0;
         for (int i = 0; i < nums.length; i++) {
