@@ -13,6 +13,37 @@ import static org.junit.Assert.assertEquals;
  */
 public class LongestValidParentheses {
 
+    // Approach 3: without extra space(copied from solution)
+    public int longestValidParentheses(String s) {
+        int left = 0, right = 0, maxlength = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                left++;
+            } else {
+                right++;
+            }
+            if (left == right) {
+                maxlength = Math.max(maxlength, 2 * right);
+            } else if (right >= left) {
+                left = right = 0;
+            }
+        }
+        left = right = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (s.charAt(i) == '(') {
+                left++;
+            } else {
+                right++;
+            }
+            if (left == right) {
+                maxlength = Math.max(maxlength, 2 * left);
+            } else if (left >= right) {
+                left = right = 0;
+            }
+        }
+        return maxlength;
+    }
+
     // Approach 2: DP (I think it's more complicated than Approach 2 using stack,
     // solving in stack even without seeing the solution...)
     // 1. state: dp[s_len], dp [i] represents the maxLen the valid subStr ends with s[i],
@@ -24,7 +55,7 @@ public class LongestValidParentheses {
     //    if s[i-1] = '(', dp[i] = dp[i-2]+2.
     //    else if s[i-1-dp[i-1]] = '(', dp[i] = dp[i-2-dp[i-1]] + dp[i-1] + 2
     // 4. return:  max_len compared during iteration
-    public int longestValidParentheses(String s) {
+    public int longestValidParentheses_dp(String s) {
         s = "))"+s;
         int[] dp = new int[s.length()];
         int res = 0;
