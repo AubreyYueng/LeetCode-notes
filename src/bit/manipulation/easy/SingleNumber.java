@@ -8,7 +8,7 @@ package bit.manipulation.easy;
 public class SingleNumber {
 
     // This question requires in-place operation.
-    // Useful technique: a^b == b^a and that a^a == 0
+    // Useful technique: a^b == b^a, a^a == 0, a^0 == a
     public int singleNumber(int[] nums) {
         int a = 0;
         for (int i : nums) {
