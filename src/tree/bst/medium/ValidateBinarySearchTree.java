@@ -1,4 +1,4 @@
-package tree.medium;
+package tree.bst.medium;
 
 import org.junit.Test;
 import tree.TreeNode;
