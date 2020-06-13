@@ -11,6 +11,8 @@ import static org.junit.Assert.assertFalse;
  */
 public class PathSum {
 
+    // Space: O(n) due to recursion.
+    // Time: O(n^2) in worst case (no branching); O(nlogn) in best case (balanced tree).
     public boolean hasPathSum(TreeNode root, int sum) {
         if (root == null)
             return false;
