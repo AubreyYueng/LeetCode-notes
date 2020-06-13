@@ -15,7 +15,7 @@ public class KthSmallestElementInABST {
     // BST : inorder traversal of BST is an array sorted in the ascending order
 
     public int kthSmallest(TreeNode root, int k) {
-        return kthSmallest_recursive(root, k);
+        return kthSmallest_iterative(root, k);
     }
 
     public int kthSmallest_recursive(TreeNode root, int k) {
@@ -33,8 +33,20 @@ public class KthSmallestElementInABST {
         inOrder(res, root.right, k);
     }
 
+    // Iteration is more efficient than recursion
     public int kthSmallest_iterative(TreeNode root, int k) {
-        return 0;
+        LinkedList<TreeNode> stack = new LinkedList<>();
+
+        while (true) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            if (--k == 0)
+                return root.val;
+            root = root.right;
+        }
     }
 
 }
