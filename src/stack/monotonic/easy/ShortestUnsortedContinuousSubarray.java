@@ -13,10 +13,48 @@ import static org.junit.Assert.assertEquals;
  */
 public class ShortestUnsortedContinuousSubarray {
 
+    // in-place:
+    // 1. find the largest/smallest wrong number by detecting the first wrong slope
+    // 2. find the correct index for 1's two number
+    // 3. return 2's distance
+    public int findUnsortedSubarray(int[] nums) {
+        int len = nums.length;
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
+
+        boolean flag = false;
+        for (int i = 1; i < len; i++) {
+            if (!flag && nums[i] < nums[i-1])
+                flag = true;
+            if (flag)
+                min = Math.min(min, nums[i]);
+        }
+
+        flag = false;
+        for (int i = len-2; i >= 0 ; i--) {
+            if (!flag && nums[i] > nums[i+1])
+                flag = true;
+            if (flag)
+                max = Math.max(max,  nums[i]);
+        }
+
+        int l = 0, r = len-1;
+        for (; l < len; l++) {
+            if (min < nums[l])
+                break;
+        }
+
+        for (; r >= 0; r--) {
+            if (max > nums[r])
+                break;
+        }
+        return r-l < 0 ? 0 : r - l + 1;
+    }
+
     // Using stack, but unlike those of finding the distance between currIdx and peekedIdx
     // It's important to figure out what we're actually looking for.
     // Here it is the distance between rightmost and leftmost wrong index
-    public int findUnsortedSubarray(int[] nums) {
+    public int findUnsortedSubarray_stack(int[] nums) {
         if (nums == null || nums.length == 0)
             return 0;
 
