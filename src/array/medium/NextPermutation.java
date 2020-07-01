@@ -12,7 +12,7 @@ public class NextPermutation {
     // eg. given 1324, then next should be 1342
     // eg. given 1342, because 42 is in descending order so 1342 is the largest permutation starts with "13",
     //     so we need to adjust "3", i.e. find a larger digit to replace "3" which is 1423 (the smallest permutation
-    //     starts with "14" means numbers on its right are in ascending order.
+    //     starts with "14" means numbers on its right are in ascending order).
     // Require: in-place
     public void nextPermutation(int[] nums) {
         // find the number that needs increasing
