@@ -1,5 +1,6 @@
 package twopointers.sliding.window.hard;
 
+import javafx.util.Pair;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -16,102 +17,67 @@ import static org.junit.Assert.assertEquals;
  */
 public class MinimumWindowSubstring {
 
+    // In solution: "The solution is pretty intuitive. We keep expanding the window by moving the right pointer. When the window has
+    // all the desired characters, we contract (if possible) and save the smallest window till now."
     public String minWindow(String s, String t) {
-        // cases like: aabc (more than 1 a)
-        Map<Character, Integer> tCnt = new HashMap<>();
-        for (char c : t.toCharArray()) {
-            int cnt = tCnt.getOrDefault(c, 0);
-            tCnt.put(c, cnt+1);
+        if (s.isEmpty() || t.isEmpty())
+            return "";
+
+        Map<Character, Integer> tMap = new HashMap<>(); // t: chars -> cnt
+        Map<Character, Integer> seen = new HashMap<>(); // sliding window: seen chars -> cnt
+        for (int i = 0; i < t.length(); i++) {
+            Character c = t.charAt(i);
+            tMap.put(c, tMap.getOrDefault(c, 0) + 1);
         }
 
-        // index -> character, only those chars in t,
-        // thus we don't need to iterate all s chars, and can avoid check if in t chars every time
-        Map<Integer, Character> sMap = new HashMap<>();
-        List<Integer> sIndices = new LinkedList<>();
-        char[] charArray = s.toCharArray();
-        for (int i = 0; i < charArray.length; i++) {
-            char c = charArray[i];
-            if (tCnt.containsKey(c)) {
-                sIndices.add(i);
-                sMap.put(i, c);
-            }
+        List<Pair<Character, Integer>> pos = new LinkedList<>();
+        for (int i = 0; i < s.length(); i++) {
+            Character c = s.charAt(i);
+            if (tMap.keySet().contains(c))
+                pos.add(new Pair<>(c, i));
         }
 
-        // count of in t chars within the sliding window
-        Map<Character, Integer> windowCnt = new HashMap<>();
-        // flag for if certain window contains all the characters in t(by comparing with tLen)
-        int flag = 0;
-        int tLen = t.length();
-
-        int minWidth = 0;
-        // then we can start to slide the window, l and r refer to the index of sIdx list
         int l = 0;
         int r = 0;
-        // First, we find the first right index with left index 0 that contains all t chars
-        for (; r < sIndices.size(); r++) {
-            int rIdx = sIndices.get(r);
+        int resSt = -1;
+        int resEd = -1;
 
-            // update windowCnt
-            Character c = sMap.get(rIdx);
-            int cnt = windowCnt.getOrDefault(c, 0);
-            int newCnt = cnt+1;
-            windowCnt.put(c, newCnt);
 
-            // update flag
-            if (newCnt <= tCnt.get(c))
-                flag++;
+        int expected = tMap.keySet().size();
+        int actual = 0;     // increase when seen.val == tMap.val
 
-            if (flag == tLen) {
-                int lIdx = sIndices.get(l);
-                minWidth = rIdx-lIdx+1;
-                break;
-            }
-        }
-        // There's never a fitting window
-        if (flag < tLen)
-            return "";
-//        System.out.println("first fitting window: l:" + sIndices.get(l) + ", r: " + sIndices.get(r));
+        while (r < pos.size()) {        // main loop: move right pointer
+            Character edChar = pos.get(r).getKey();
+            int edPos = pos.get(r).getValue();
+            int edCnt = seen.getOrDefault(edChar, 0)+1;
+            seen.put(edChar, edCnt);
+            if (edCnt == tMap.get(edChar))
+                actual++;
 
-        String res = s.substring(sIndices.get(l), sIndices.get(r)+1);
+            // contract the sliding window
+            while (expected == actual && l <= r) {
+                Character stChar = pos.get(l).getKey();
+                int stPos = pos.get(l).getValue();
 
-        int sIndicesLen = sIndices.size();
-        while (l < r && r < sIndicesLen) {
-            int lIdx = sIndices.get(l);
-            int rIdx = sIndices.get(r);
+                if (resSt == -1 || (resEd-resSt) > edPos-stPos) {
+                    resSt = stPos;
+                    resEd = edPos;
+                }
 
-            Character lVal = sMap.get(lIdx);
-            int currLCnt = windowCnt.get(lVal);     // count of lVal in the window
-            int tLCnt = tCnt.get(lVal);             // count of lVal in t
+                int stCnt = seen.get(stChar) - 1;
+                seen.put(stChar, stCnt);
+                if (stCnt < tMap.get(stChar))
+                    actual--;
 
-            if (currLCnt > tLCnt) {
-                // if current left value exceed the actual, we can move left to the next
-                windowCnt.put(lVal, currLCnt-1);
                 l++;
-                lIdx = sIndices.get(l);
-
-                // compare the current width of the window with former minWidth to decide if res is needed updating
-                int currWidth = rIdx-lIdx+1;
-                if (currWidth < minWidth) {
-                    minWidth = currWidth;
-                    res = s.substring(sIndices.get(l), sIndices.get(r)+1);
-                }
-            } else {
-                // otherwise, left pointer can't be moved, so we move right to the next
-                if (r == sIndicesLen-1)
-                    break;
-                else {
-                    r++;
-                    rIdx = sIndices.get(r);
-                    Character rVal = sMap.get(rIdx);
-                    windowCnt.put(rVal, windowCnt.get(rVal)+1);
-                }
             }
-//            System.out.println("sliding fitting window: l:" + sIndices.get(l) + ", r: " + sIndices.get(r));
+            r++;
         }
-//        System.out.println("final fitting window: l:" + sIndices.get(l) + ", r: " + sIndices.get(r));
 
-        return res;
+        return resSt == -1 ? "" : s.substring(resSt, resEd+1);
     }
+
+
 
     @Test
     public void case1() {
