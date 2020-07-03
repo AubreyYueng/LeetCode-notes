@@ -1,4 +1,4 @@
-package backtracking.medium;
+package dfs.medium;
 
 /**
  * Created by Yiyun On 2020/2/18 11:18
