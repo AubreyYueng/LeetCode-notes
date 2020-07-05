@@ -42,6 +42,44 @@ import static org.junit.Assert.assertEquals;
  */
 public class EditDistance {
 
+    // bottom-up DP
+    // state: [s_len+1][t_len+1]: [i][j] is minDist of s[:i] => t[:j]
+    // init: [0][j] = j, [i][0] = i
+    // func: [i][j] is the MIN over the following
+    //    1) delete:  [i-1][j] + 1
+    //    2) insert:  [i][j-1] + 1
+    //    3) replace: [i-1][j-1] + (s[i]==s[j] ? 0 : 1)
+    // ret: [s_len][t_len]
+    // optimize space: According to the func, only the previous status matters. Thus we use 1-d DP
+    public int minDistance_review20200704(String word1, String word2) {
+        int sLen= word1.length();
+        int tLen = word2.length();
+        int[] prev = new int[tLen+1];
+        int[] curr = new int[tLen+1];
+
+        // init [0][j]
+        for (int i = 0; i <= tLen; i++) prev[i] = i;
+
+        for (int i = 1; i <= sLen; i++) {
+            // init [i][0]
+            curr[0] = i;
+            char chS = word1.charAt(i-1);
+
+            for (int j = 1; j <= tLen; j++) {
+                int delete = prev[j] + 1;
+                int insert = curr[j-1] + 1;
+                int replace = prev[j-1] + (chS==word2.charAt(j-1) ? 0 : 1);
+                curr[j] = Math.min(delete, Math.min(insert, replace));
+            }
+
+            prev = curr;
+            curr = new int[tLen+1];
+        }
+        return prev[tLen];
+    }
+
+
+
     public int minDistance_review20200208(String word1, String word2) {
         // dp(i, j): min distance to make first i chars of word1 to become first j chars of word2
         // dp(i, j) = min(
@@ -106,11 +144,11 @@ public class EditDistance {
 
     @Test
     public void case1() {
-        assertEquals(3, minDistance("horse", "ros"));
+        assertEquals(3, minDistance_review20200704("horse", "ros"));
     }
 
     @Test
     public void case2() {
-        assertEquals(5, minDistance("intention", "execution"));
+        assertEquals(5, minDistance_review20200704("intention", "execution"));
     }
 }
