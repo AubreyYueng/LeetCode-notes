@@ -3,6 +3,7 @@ package backtracking.medium;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -34,6 +35,36 @@ import java.util.List;
  */
 public class Subsets {
 
+    public List<List<Integer>> subsets_review20200705(int[] nums) {
+        if (nums == null)
+            return Collections.emptyList();
+        Helper_review20200705 h = new Helper_review20200705(nums);
+        h.dfs(0, new ArrayList<>());
+        return h.res;
+    }
+
+    private static class Helper_review20200705 {
+        private int[] nums;
+        private int n;
+        private List<List<Integer>> res;
+
+        private Helper_review20200705(int[] nums) {
+            this.nums = nums;
+            this.n = nums.length;
+            this.res = new ArrayList<>();
+        }
+
+        private void dfs(int st, List<Integer> tmp) {
+            res.add(new ArrayList<>(tmp));
+
+            for (int i = st; i < n; i++) {
+                List<Integer> nextTmp = new ArrayList<>(tmp);
+                nextTmp.add(nums[i]);
+                dfs(i+1, nextTmp);
+            }
+        }
+    }
+
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         if (nums == null) return res;
@@ -62,7 +93,7 @@ public class Subsets {
 
     @Test
     public void case1() {
-        System.out.println(subsets(new int[]{1, 2, 3}));
+        System.out.println(subsets_review20200705(new int[]{1, 2, 3}));
     }
 
 }
