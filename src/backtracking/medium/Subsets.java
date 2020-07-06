@@ -29,11 +29,30 @@ import java.util.List;
  *  [1,2],
  *  []
  * ]
- *
- * TODO: bcs list is modifiable, so res.add(new LinkedList<>(list))
- * TODO: bit manipulation
  */
 public class Subsets {
+
+    // The following codes are mostly copied from the LC solution.
+    // Note the following way of solving zero left padding
+    public List<List<Integer>> subsets_bitmanipulation(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        int n = nums.length;
+
+        int nthBit = 1 << n;
+        for (int i = 0; i < (int)Math.pow(2, n); i++) {
+            // generate bitmask, from 0..00 to 1..11
+            String bitmask = Integer.toBinaryString(i | nthBit).substring(1);
+
+            // append subset corresponding to that bitmask
+            List<Integer> curr = new ArrayList<>();
+            for (int j = 0; j < n; j++) {
+                if (bitmask.charAt(j) == '1')
+                    curr.add(nums[j]);
+            }
+            res.add(curr);
+        }
+        return res;
+    }
 
     public List<List<Integer>> subsets_review20200705(int[] nums) {
         if (nums == null)
