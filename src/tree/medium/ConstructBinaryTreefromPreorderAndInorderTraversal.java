@@ -31,6 +31,41 @@ import java.util.Map;
  */
 public class ConstructBinaryTreefromPreorderAndInorderTraversal {
 
+    // TODO  Time: O(N)
+    public TreeNode buildTree_review20200714(int[] preorder, int[] inorder) {
+        Helper_review20200714 helper = new Helper_review20200714(preorder, inorder);
+        return helper.buildRoot(0, inorder.length-1);
+    }
+
+    // Fact: The first element in pre-order list is a root, which splits the in-order list into left and right trees.
+    private static class Helper_review20200714 {
+        private int[] preorder;
+        private int[] inorder;
+        private int preIdx;
+        private Map<Integer, Integer> idxMap = new HashMap<>();     // keep track of index of value in in-order list
+
+        private Helper_review20200714(int[] preorder, int[] inorder) {
+            this.preorder = preorder;
+            this.inorder = inorder;
+            for (int i = 0; i < this.inorder.length; i++) idxMap.put(inorder[i], i);
+        }
+
+        // The following codes are written based on LC solution
+        // left and right are indices in in-order list, rootIdx is the current index in pre-order list
+        private TreeNode buildRoot(int left, int right) {
+            if (left > right)
+                return null;
+
+            int rootVal = preorder[preIdx++];
+            int inIdx = idxMap.get(rootVal);
+            TreeNode currRoot = new TreeNode(rootVal);
+
+            currRoot.left = buildRoot(left, inIdx-1);
+            currRoot.right = buildRoot(inIdx+1, right);
+            return currRoot;
+        }
+    }
+
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         Helper helper = new Helper(preorder, inorder);
         return helper.dfs(0, preorder.length-1, 0, inorder.length-1);
