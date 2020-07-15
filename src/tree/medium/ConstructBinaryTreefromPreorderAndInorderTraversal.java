@@ -31,7 +31,8 @@ import java.util.Map;
  */
 public class ConstructBinaryTreefromPreorderAndInorderTraversal {
 
-    // TODO  Time: O(N)
+    // Time: O(N)
+    // Space: O(N)
     public TreeNode buildTree_review20200714(int[] preorder, int[] inorder) {
         Helper_review20200714 helper = new Helper_review20200714(preorder, inorder);
         return helper.buildRoot(0, inorder.length-1);
