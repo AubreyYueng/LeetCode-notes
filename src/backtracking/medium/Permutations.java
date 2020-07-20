@@ -2,8 +2,7 @@ package backtracking.medium;
 
 import org.junit.Test;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -53,6 +52,39 @@ public class Permutations {
         }
     }
 
+    public List<List<Integer>> permute_review20200720(int[] nums) {
+        return new Helper20200720(nums).res;
+    }
+
+    private static class Helper20200720 {
+        int [] nums;
+        int n;
+        List<List<Integer>> res = new ArrayList<>();
+
+        Helper20200720(int[] nums) {
+            this.nums = nums;
+            this.n = nums.length;
+            dfs(new ArrayList<>(), new HashSet<>());
+        }
+
+        private void dfs(List<Integer> tmp, Set<Integer> usedIdx) {
+            if (usedIdx.size() == n) {
+                res.add(new ArrayList<>(tmp));
+                return;
+            }
+
+            for (int i = 0; i < n; i++) {
+                if (usedIdx.contains(i)) continue;
+
+                Set<Integer> newUsedIdx = new HashSet<>(usedIdx);
+                newUsedIdx.add(i);
+                List<Integer> newTmp = new ArrayList<>(tmp);
+                newTmp.add(nums[i]);
+                dfs(newTmp, newUsedIdx);
+            }
+        }
+    }
+
     @Test
     public void case1() {
         assertEquals(new LinkedList<>(asList(
@@ -62,6 +94,6 @@ public class Permutations {
                 asList(2,3,1),
                 asList(3,1,2),
                 asList(3,2,1)
-        )), permute(new int[]{1,2,3}));
+        )), permute_review20200720(new int[]{1,2,3}));
     }
 }
