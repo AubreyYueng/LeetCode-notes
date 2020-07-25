@@ -12,56 +12,44 @@ import static org.junit.Assert.assertEquals;
  * Longest Repeating Substring
  *
  * 1062. Longest Repeating Substring
- *
- * Given a string S, find out the length of the longest repeating substring(s).
- * Return 0 if no repeating substring exists.
- *
- * Example 1:
- * Input: "abcd"
- * Output: 0
- * Explanation: There is no repeating substring.
- *
- * Example 2:
- * Input: "abbaba"
- * Output: 2
- * Explanation: The longest repeating substrings are "ab" and "ba", each of which occurs twice.
- *
- * Example 3:
- * Input: "aabcaabdaab"
- * Output: 3
- * Explanation: The longest repeating substring is "aab", which occurs 3 times.
- *
- * Example 4:
- * Input: "aaaaa"
- * Output: 4
- * Explanation: The longest repeating substring is "aaaa", which occurs twice.
- *
- * Note:
- * The string S consists of only lowercase English letters from 'a' - 'z'.
- * 1 <= S.length <= 1500
- *
- * TODO: Approach 1: Binary Search + Hashset of Already Seen Strings
- * TODO: Approach 2: Binary Search + Hashset of Hashes of Already Seen Strings
- *
- * TODO: Binary Search PART: suppose char length is 15
- * TODO: 1) Start to find repeated string of max length 8:(1+15)/2;
- * TODO: 2) If NOT FOUND, find max length of 4:(1+8)/2;
- * TODO: 3) If FOUND, find max length of 6:(4+8)/2,...etc.
- * TODO: Basically, what discussed above is the thought of binary search.
- * TODO: Notice: think carefully which binary search pattern to use.
- *
- * TODO: Search PART: 3 approaches
- * TODO: 1. Linear-time slice + hashset of already seen strings. O((N−L)L) time complexity and huge space consumption
- * TODO:    in the case of large strings (O(N-L)L).
- * TODO: 2. Linear-time slice + hashset of hashes of already seen strings. O((N−L)L) time complexity and moderate
- * TODO:    space consumption even in the case of large strings (O(N-L)).
- * TODO: 3. Rabin-Karp=constant-time slice+hashset of hashes of already seen strings. Hashes are computed with the
- * TODO:    rolling hash algorithm. O(N−L) time complexity and moderate space consumption even in the case of large
- * TODO:    strings (O(N-L)).
- * TODO: Must refer to the leetcode SOLUTION for comprehensive analysis of algorithm (including Rolling Hash,
- * TODO: Linear congruential generator).
  */
 public class LongestRepeatingSubstring {
+
+    // binary search + hashset of hashes
+    public int longestRepeatingSubstring_review20200724(String S) {
+        return new Helper_review20200724(S).res();
+    }
+
+    private static class Helper_review20200724 {
+        String S;
+        int n;
+
+        Helper_review20200724(String s) {
+            S = s;
+            this.n = s.length();
+        }
+
+        private int res() {
+            int l = 0;  // representing the possible length of substring
+            int r = n;
+            while (l < r) {
+                int mid = (l + r) / 2;
+                if (search_hashsetOfHashes(mid) != -1) l = mid + 1;
+                else r = mid;
+            }
+            return l-1;
+        }
+
+        private int search_hashsetOfHashes(int L) {
+            HashSet<Integer> seen = new HashSet<>();
+            for (int i = 0; i < n - L + 1; i++) {
+                int h = S.substring(i, i+L).hashCode();
+                if (seen.contains(h)) return i;
+                seen.add(h);
+            }
+            return -1;
+        }
+    }
 
     // approach 2: binary search+hash of already seen strings
     public int longestRepeatingSubstring(String S) {
@@ -93,22 +81,22 @@ public class LongestRepeatingSubstring {
 
     @Test
     public void case1() {
-        assertEquals(0, longestRepeatingSubstring("abcd"));
+        assertEquals(0, longestRepeatingSubstring_review20200724("abcd"));
     }
 
     @Test
     public void case2() {
-        assertEquals(2, longestRepeatingSubstring("abbaba"));
+        assertEquals(2, longestRepeatingSubstring_review20200724("abbaba"));
     }
 
     @Test
     public void case3() {
-        assertEquals(3, longestRepeatingSubstring("aabcaabdaab"));
+        assertEquals(3, longestRepeatingSubstring_review20200724("aabcaabdaab"));
     }
 
     @Test
     public void case4() {
-        assertEquals(4, longestRepeatingSubstring("aaaaa"));
+        assertEquals(4, longestRepeatingSubstring_review20200724("aaaaa"));
     }
 
 }
