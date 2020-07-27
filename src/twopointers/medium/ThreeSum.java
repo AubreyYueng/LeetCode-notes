@@ -2,6 +2,7 @@ package twopointers.medium;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +12,62 @@ import java.util.List;
  * 15. 3Sum
  */
 public class ThreeSum {
+
+    public List<List<Integer>> threeSum_review20200727(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        Arrays.sort(nums);
+        int bound = target / 3;
+        int n = nums.length;
+        for (int i = 0; i < n-2; i++) {
+            int num = nums[i];
+            if (num > bound)
+                break;
+
+            if (i > 0 && num == nums[i-1]) continue;
+
+            for (List<Integer> subRes : twoSum_review20200727(i + 1, nums, target - num)) {
+                subRes = new ArrayList<>(subRes);
+                subRes.add(num);
+                res.add(subRes);
+            }
+        }
+        return res;
+    }
+
+    private List<List<Integer>> twoSum_review20200727(int st, int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+
+        int l = st;
+        int r = nums.length-1;
+        int flag = target / 2;
+        while (l < r) {
+            int lNum = nums[l];
+            if (lNum > flag)
+                break;
+
+            if (l != st && lNum == nums[l-1]) {
+                l++;
+                continue;
+            }
+
+            int rNum = nums[r];
+            int sum = lNum + rNum;
+            if (sum == target) {
+                res.add(Arrays.asList(lNum, rNum));
+            }
+
+            if (sum > target)
+                r--;
+            else
+                l++;
+        }
+
+        return res;
+    }
+
+
+
 
     public List<List<Integer>> threeSum(int[] nums) {
         return threeSum(nums, 0);
