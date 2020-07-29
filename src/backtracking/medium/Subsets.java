@@ -11,26 +11,26 @@ import java.util.List;
  * Created by Yiyun On 2019/9/17 10:46
  *
  * 78. Subsets
- *
- * Given a set of distinct integers, nums, return all possible subsets (the power set).
- *
- * Note: The solution set must not contain duplicate subsets.
- *
- * Example:
- * Input: nums = [1,2,3]
- * Output:
- * [
- *  [3],
- *  [1],
- *  [2],
- *  [1,2,3],
- *  [1,3],
- *  [2,3],
- *  [1,2],
- *  []
- * ]
  */
 public class Subsets {
+
+    public List<List<Integer>> subsets_review20200729(int[] nums) {
+        List<List<Integer>> res = new ArrayList<>();
+        int n = nums.length;
+
+        int cardinal = (int)Math.pow(2, n);
+        for (int i = 0; i < cardinal; i++) {
+            String bitStr = Integer.toBinaryString(cardinal | i).substring(1);
+
+            List<Integer> sub = new ArrayList<>();
+            res.add(sub);
+            for (int j = 0; j < n; j++) {
+                if (bitStr.charAt(j) == '1')
+                    sub.add(nums[j]);
+            }
+        }
+        return res;
+    }
 
     // The following codes are mostly copied from the LC solution.
     // Note the following way of solving zero left padding
@@ -112,7 +112,7 @@ public class Subsets {
 
     @Test
     public void case1() {
-        System.out.println(subsets_review20200705(new int[]{1, 2, 3}));
+        System.out.println(subsets_review20200729(new int[]{1, 2, 3}));
     }
 
 }
