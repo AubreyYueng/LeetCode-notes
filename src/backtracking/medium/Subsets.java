@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Subsets {
 
-    public List<List<Integer>> subsets_review20200729(int[] nums) {
+    public List<List<Integer>> subsets_review20200729_bit(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         int n = nums.length;
 
@@ -30,6 +30,31 @@ public class Subsets {
             }
         }
         return res;
+    }
+
+    public List<List<Integer>> subsets_review20200729_backtrack(int[] nums) {
+        return new DFSHelper_20200729(nums).res;
+    }
+
+    private static class DFSHelper_20200729 {
+        int[] nums;
+        List<List<Integer>> res = new ArrayList<>();
+        int n;
+
+        DFSHelper_20200729(int[] nums) {
+            this.nums = nums;
+            this.n = nums.length;
+            dfs(0, new ArrayList<>());
+        }
+
+        private void dfs(int i, List<Integer> tmp) {
+            res.add(new ArrayList<>(tmp));
+            for(; i < n; i++) {
+                List<Integer> newTmp = new ArrayList<>(tmp);
+                newTmp.add(nums[i]);
+                dfs(i+1, newTmp);
+            }
+        }
     }
 
     // The following codes are mostly copied from the LC solution.
@@ -112,7 +137,7 @@ public class Subsets {
 
     @Test
     public void case1() {
-        System.out.println(subsets_review20200729(new int[]{1, 2, 3}));
+        System.out.println(subsets_review20200729_backtrack(new int[]{1, 2, 3}));
     }
 
 }
