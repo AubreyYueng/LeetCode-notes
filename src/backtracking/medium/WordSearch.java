@@ -7,32 +7,59 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Created by Yiyun On 2019/8/30 00:28
- *
  * 79. Word Search
- *
- * Given a 2D board and a word, find if the word exists in the grid.
- * The word can be constructed from letters of sequentially adjacent cell, where 'adjacent' cells are those horizontally
- * or vertically neighboring. The same letter cell may not be used more than once.
- *
- * Example:
- * board =
- * [
- *  ['A','B','C','E'],
- *  ['S','F','C','S'],
- *  ['A','D','E','E']
- * ]
- * Given word = 'ABCCED', return true.
- * Given word = 'SEE', return true.
- * Given word = 'ABCB', return false.
- *
- * TODO: 1. NOTE that 'The same letter cell may not be used more than once'
- * TODO: 2. how to initialize a size fixed array
- * TODO: 3. don't split string, use 'charAt'
- * TODO: 4. reason why set 'used[row][col] = false;' at the last of dfs method:
- * TODO:        if res is true, doesn't matter if it's set,
- * TODO:        if res is false, this cell should set to false
  */
 public class WordSearch {
+
+    public boolean exist_review20200730(char[][] board, String word) {
+        if (board == null || board.length == 0) return false;
+        return new DFS_20200730(board, word).res;
+    }
+
+    private static class DFS_20200730 {
+        static int[][] dirs = new int[][]{{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        // given parameters
+        char[][] board;
+        String word;
+
+        int M;
+        int N;
+        int W;
+        boolean[][] used;
+        boolean res;
+
+        DFS_20200730(char[][] board, String word) {
+            this.board = board;
+            this.word = word;
+            this.M = board.length;
+            this.N = board[0].length;
+            this.W = word.length();
+            used = new boolean[M][N];
+
+            int w = 0;
+            for (int m = 0; m < M; m++) {
+                for (int n = 0; n < N; n++) {
+                    if (dfs(w, m, n)) {
+                        res = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        private boolean dfs(int w, int m, int n) {
+            if (w == W) return true;
+            if (m < 0 || m >= M || n < 0 || n >= N) return false;
+            if (used[m][n] || board[m][n] != word.charAt(w)) return false;
+
+            used[m][n] = true;
+            for (int[] dir : dirs) {
+                if (dfs(w+1, m+dir[0], n+dir[1])) return true;
+            }
+            used[m][n] = false;
+            return false;
+        }
+    }
 
     public boolean exist(char[][] board, String word) {
         int rowSize = board.length;
@@ -74,7 +101,7 @@ public class WordSearch {
 
     @Test
     public void case1() {
-        assertTrue(exist(new char[][]{
+        assertTrue(exist_review20200730(new char[][]{
                 {'A','B','C','E'},
                 {'S','F','C','S'},
                 {'A','D','E','E'}}, "ABCCED"));
@@ -82,6 +109,14 @@ public class WordSearch {
 
     @Test
     public void case2() {
-        assertFalse(exist(new char[][]{{'b'},{'a'},{'b'}}, "bbabab"));
+        assertFalse(exist_review20200730(new char[][]{{'b'},{'a'},{'b'}}, "bbabab"));
+    }
+
+    @Test
+    public void case3() {
+        assertTrue(exist_review20200730(new char[][]{
+                {'A','B','C','E'},
+                {'S','F','C','S'},
+                {'A','D','E','E'}}, "SEE"));
     }
 }
