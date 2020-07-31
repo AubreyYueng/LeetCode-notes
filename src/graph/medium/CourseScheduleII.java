@@ -16,6 +16,85 @@ import static org.junit.Assert.assertEquals;
  */
 public class CourseScheduleII {
 
+    public int[] findOrder_review20200730(int numCourses, int[][] prerequisites) {
+        return new Helper_20200730(numCourses, prerequisites).res;
+    }
+
+    private static class Helper_20200730 {
+        Map<Integer, List<Integer>> adjList = new HashMap<>();
+        boolean cyclic;
+        Map<Integer, T> types = new HashMap<>();
+        LinkedList<Integer> resStack = new LinkedList<>();
+        int[] res;
+
+        // given parameters
+        int numCourses;
+        int[][] preqs;
+
+        Helper_20200730(int numCourses, int[][] prerequisites) {
+            this.numCourses = numCourses;
+            this.preqs = prerequisites;
+
+            init();
+
+            for (int i = 0; i < numCourses; i++) {
+                if (cyclic) break;
+                if (types.get(i) == T.UNSEEN) dfs(i);
+            }
+
+            if (cyclic) res = new int[0];
+            else {
+                this.res = new int[numCourses];
+                int i = 0;
+                while (!resStack.isEmpty()) res[i++] = resStack.pop();
+            }
+        }
+
+        private void init() {
+            for (int[] preq : preqs) {
+                List<Integer> values = adjList.getOrDefault(preq[1], new ArrayList<>());
+                values.add(preq[0]);
+                adjList.put(preq[1], values);
+            }
+
+            for (int i = 0; i < numCourses; i++) {
+                adjList.putIfAbsent(i, Collections.emptyList());
+                types.put(i, T.UNSEEN);
+            }
+        }
+
+        private void dfs(Integer node) {
+            if (types.get(node) != T.UNSEEN || cyclic) return;
+
+            types.put(node, T.PROCESSING);
+
+            List<Integer> children = adjList.get(node);
+            for (Integer chd : children) {
+                if (types.get(chd) == T.PROCESSING) {
+                    this.cyclic = true;
+                    break;
+                }
+                dfs(chd);
+            }
+
+            resStack.push(node);
+            types.put(node, T.DONE);
+        }
+
+        private enum T {
+            UNSEEN,
+            DONE,
+            PROCESSING      // all processing nodes are in a same dfs route, we use it for detecting cycle
+        }
+
+    }
+
+
+
+
+
+
+
     // DFS: Time O(N), Space O(N)
     // The following codes are mostly learned from LC Solution
     public int[] findOrder(int numCourses, int[][] prerequisites) {
@@ -84,15 +163,20 @@ public class CourseScheduleII {
 
     @Test
     public void case1() {
-        assertEquals("[0, 1]", Arrays.toString(findOrder(2, new int[][]{{1, 0}})));
+        assertEquals("[0, 1]", Arrays.toString(findOrder_review20200730(2, new int[][]{{1, 0}})));
 
     }
 
     @Test
     public void case2() {
-        assertThat(Arrays.toString(findOrder(4, new int[][]{{1, 0}, {2, 0}, {3, 1}, {3, 2}})),
+        assertThat(Arrays.toString(findOrder_review20200730(4, new int[][]{{1, 0}, {2, 0}, {3, 1}, {3, 2}})),
                 anyOf(is("[0, 1, 2, 3]"), is("[0, 2, 1, 3]"))
         );
+    }
+
+    @Test
+    public void case3() {
+        assertEquals("[]", Arrays.toString(findOrder_review20200730(2, new int[][]{{1, 0}, {0, 1}})));
     }
 
 }
