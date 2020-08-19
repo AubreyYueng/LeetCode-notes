@@ -13,31 +13,30 @@ import static org.junit.Assert.assertEquals;
  * Created by Yiyun On 2019/9/1 02:39
  *
  * 120. Triangle
- *
- * Given a triangle, find the minimum path sum from top to bottom. Each step you may move to adjacent numbers on the row below.
- * For example, given the following triangle
- * [
- *       [2],
- *      [3,4],
- *     [6,5,7],
- *    [4,1,8,3]
- * ]
- * The minimum path sum from top to bottom is 11 (i.e., 2 + 3 + 5 + 1 = 11).
- *
- * Note:
- * Bonus point if you are able to do this using only O(n) extra space, where n is the total number of rows in the triangle.
- *
- * TODO: 注意不是简单的加上下一行相邻的最小值
- *
- * 动态规划 时间O(n2) 空间O(1)
- * 点(i,j)的下一行的相邻数字是(i+1,j)和(i+1,j+1)。
- * f(i,j)表示从下往上走到位置(i,j)时的最小路径和，计算方式/状态转移方程是
- * f(i,j)=(i,j)+min(f(i+1,j),f(i+1,j+1))
- * 复杂度分析：
- * 直接把f(i,j)存在位置(i,j)处，不使用额外空间，因此空间复杂度为O(1)。
- * 两层for loop，第一次竖着遍历，第二次横着遍历，时间复杂度为O(n2)。
  */
 public class Triangle {
+
+    public int minimumTotal_review20200818(List<List<Integer>> triangle) {
+        if (triangle == null || triangle.isEmpty() )
+            return 0;
+
+        if (triangle.size() == 1) return triangle.get(0).get(0);
+        for (int i = 1; i < triangle.size(); i++) {
+            update(triangle.get(i), triangle.get(i-1));
+        }
+        return Collections.min(triangle.get(triangle.size()-1));
+    }
+
+    private void update(List<Integer> next, List<Integer> prev) {
+        int size = prev.size();
+        next.set(0, next.get(0)+prev.get(0));
+        next.set(size, next.get(size)+prev.get(size-1));
+
+        for (int i = 1; i < next.size()-1; i++) {
+            int curr = next.get(i);
+            next.set(i, curr + Math.min(prev.get(i-1), prev.get(i)));
+        }
+    }
 
     public int minimumTotal(List<List<Integer>> triangle) {
         int rowCnt = triangle.size();
