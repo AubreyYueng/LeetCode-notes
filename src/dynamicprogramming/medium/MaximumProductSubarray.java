@@ -13,6 +13,48 @@ import static org.junit.Assert.assertEquals;
  */
 public class MaximumProductSubarray {
 
+    public int maxProduct_review20200910(int[] nums) {
+        return new Helper_20200910(nums).getRes();
+    }
+
+    // when it comes to [i], chances are:
+    // a. prev+[i], ends at [i]
+    // b. [i], starts at [i]
+    // c. without [i].
+    // two cases:
+    // 0: have to restart, update higher score in result
+    // neg: flip the largest to smallest, but can be saved by next neg.
+    // TYPICAL MISTAKE: a[i+1]=max(a[i],b[i]) + [i], instead we need min and max at the same time
+    private static class Helper_20200910 {
+        private final int[] nums;
+        int n;
+
+        Helper_20200910(int[] nums) {
+            this.nums = nums;
+            this.n = nums.length;
+        }
+
+        private int getRes() {
+            if (nums.length == 0) return 0;
+
+            int res = nums[0];
+            int min = nums[0];  // min and max when includes [i] in current loop stage
+            int max = nums[0];
+
+            for (int i = 1; i < n; i++) {
+                int num = nums[i];
+                int thisMax = Math.max(num, Math.max(num * min, num * max));
+                int thisMin = Math.min(num, Math.min(num * min, num * max));
+
+                min = thisMin;
+                max = thisMax;
+                res = Math.max(res, max);
+            }
+
+            return res;
+        }
+    }
+
     // state: minToCurr[len], maxToCurr[len]
     // func: minToCurr[i] = min(minToCurr[i-1]*nums[i], maxToCurr[i-1]*nums[i], nums[i])
     // maxToCurr[i] = max(minToCurr[i-1]*nums[i], maxToCurr[i-1]*nums[i], nums[i])
