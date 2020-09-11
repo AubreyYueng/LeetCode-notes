@@ -1,4 +1,4 @@
-package contest;
+package contest._0801;
 
 import org.junit.Test;
 
@@ -7,7 +7,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by Yiyun On 2020/8/1 22:34
  *
- * 5475. Count Good Triplets
+ * 1534. Count Good Triplets
  */
 public class CountGoodTriplets {
 
