@@ -13,6 +13,31 @@ import static org.junit.Assert.assertEquals;
  */
 public class LargestRectangleInHistogram {
 
+    // depends on shorter bar: increase stack
+    public int largestRectangleArea_review20200910(int[] heights) {
+        if (heights == null || heights.length == 0) return 0;
+
+        LinkedList<Integer> stack = new LinkedList<>();
+        int bottom = -1;
+        stack.push(bottom);
+        int max = heights[0];
+
+        for (int i = 0; i < heights.length; i++) {
+            int cur = heights[i];
+
+            while (stack.peek() != bottom && heights[stack.peek()] > cur) {
+                max = Math.max(max, heights[stack.pop()] * (i-stack.peek()-1));
+            }
+            stack.push(i);
+        }
+
+        while (stack.peek() != -1) {
+            max = Math.max(max, heights[stack.pop()] * (heights.length-stack.peek()-1));
+        }
+
+        return max;
+    }
+
     // monotonically increasing stack
     // we can't use decreasing stack bcs the shorter bar is popped thus it can't be used to evaluate further
     // the rectangle's area depends on the lowest bar, while 11. Container With Most Water is not the case
