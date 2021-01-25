@@ -11,7 +11,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created by Yiyun On 2020/6/7 00:57
+ * Created by Yiyun
  *
  * 76. Minimum Window Substring
  */

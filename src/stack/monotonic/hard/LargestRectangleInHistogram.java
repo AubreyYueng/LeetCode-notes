@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created by Yiyun On 2020/6/4 03:11
+ * Created by Yiyun
  *
  * 84. Largest Rectangle in Histogram
  */
