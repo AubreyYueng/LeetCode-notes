@@ -13,7 +13,7 @@ public class _2 {
 
     public int minCharacters(String a, String b) {
         int res = Math.min(aLTb(a, b), aLTb(b, a));
-        
+        // TODO
         return res;
     }
 
