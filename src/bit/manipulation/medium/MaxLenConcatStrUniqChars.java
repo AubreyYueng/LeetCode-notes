@@ -11,8 +11,8 @@ import static org.junit.Assert.*;
  * 1239. Maximum Length of a Concatenated String with Unique Characters
  * Contains:
  *  1. [Rej]TLE solution: normal DFS/brute force.
- *  2. [Weirdly Rej, see test case2_1] Bit-manipulation solution.
- *  3. [Weirdly Accepted, see test case2_1] Refactored bit-manipulation solution from lee215
+ *  2. [Accepted] Bit-manipulation solution.
+ *  3. [Accepted/Clean] Refactored bit-manipulation solution from lee215
  */
 public class MaxLenConcatStrUniqChars {
 
@@ -20,7 +20,7 @@ public class MaxLenConcatStrUniqChars {
     int n;
     int[] bits;
 
-    public int maxLength(List<String> arr) {
+    public int maxLength_clean(List<String> arr) {
         List<Integer> dp = new ArrayList<>();
         dp.add(0);
         int res = 0;
@@ -40,39 +40,35 @@ public class MaxLenConcatStrUniqChars {
         return res;
     }
 
-    public int maxLength_bit_rej(List<String> arr) {
+    public int maxLength(List<String> arr) {
         this.arr = arr;
 
         Set<Integer> bitset = new HashSet<>();
         for (String s: arr) {
-            int bits = toBits(s);
-            // Unused space用来储存这个词的长度，在dfs里用到。不做这个操作也可以。
-            bitset.add(bits);
+            toBits(s, bitset);
         }
         // arr只是为了在dfs取数，set拿不了
         this.bits = set2Arr(bitset);
         this.n = this.bits.length;
-        return dfs_bit_rej(0, 0);
+        return dfs(0, 0);
     }
 
     @Test
     public void case1() {
-        assertEquals(16, maxLength_bit_rej(new ArrayList<>(Arrays.asList("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"))));
+        assertEquals(16, maxLength(new ArrayList<>(Arrays.asList("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"))));
     }
 
     @Test
     public void case2_1() {
-        assertNotEquals(0, maxLength_bit_rej(new ArrayList<>(Arrays.asList("yy","bkhwmpbiisbldzknpm"))));
-        assertEquals(20, maxLength(new ArrayList<>(Arrays.asList("yy","bkhwmpbiisbldzknpm"))));
+        assertEquals(0, maxLength(new ArrayList<>(Arrays.asList("yy","bkhwmpbiisbldzknpm"))));
     }
 
     @Test
     public void case2_2() {
-        assertEquals(0, maxLength(new ArrayList<>(Arrays.asList("yy","bkhwmpbiisbldzknpm"))));
-        assertNotEquals(20, maxLength_bit_rej(new ArrayList<>(Arrays.asList("yy","bkhwmpbiisbldzknpm"))));
+        assertEquals(0, maxLength_clean(new ArrayList<>(Arrays.asList("yy","bkhwmpbiisbldzknpm"))));
     }
 
-    private int dfs_bit_rej(int idx, int cur) {
+    private int dfs(int idx, int cur) {
         int curCombo = cur & ((1 << 26) - 1);
         int curLen = cur >> 26;
         int res = curLen;
@@ -87,23 +83,24 @@ public class MaxLenConcatStrUniqChars {
                 continue;
 
             int nextCombo = curCombo + nextBits + (curLen+nextLen << 26);
-            res = Math.max(res, dfs_bit_rej(i+1, nextCombo));
+            res = Math.max(res, dfs(i+1, nextCombo));
         }
         return res;
 
     }
 
-    private int toBits(String s) {
+    private void toBits(String s, Set<Integer> bitset) {
         int bits = 0;
         for (char ch: s.toCharArray()) {
             int mask = 1 << ch - 'a';
 
             // 这个词里的字母本来就有重复，无谓再循环了
             if ((bits & mask) > 0)
-                break;
+                return;
             bits += mask;
         }
-        return bits + (s.length()<<26);
+        // Unused space用来储存这个词的长度，在dfs里用到。不做这个操作也可以。
+        bitset.add(bits + (s.length()<<26));
     }
 
     private int[] set2Arr(Set<Integer> set) {
