@@ -1,3 +1,5 @@
+package trivial;
+
 import org.junit.Test;
 
 /**
