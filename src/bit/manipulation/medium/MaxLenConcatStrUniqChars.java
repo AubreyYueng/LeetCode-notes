@@ -10,9 +10,9 @@ import static org.junit.Assert.*;
  * Created by Yiyun On 2021/9/22 20:37
  * 1239. Maximum Length of a Concatenated String with Unique Characters
  * Contains:
- *  1[Rej]. Bit-manipulation solution.
- *  2[Rej]. TLE solution: normal DFS/brute force.
- *  3[Accept]. Refactored bit-manipulation solution from lee215
+ *  1. [Rej]TLE solution: normal DFS/brute force.
+ *  2. [Weirdly Rej, see test case2_1] Bit-manipulation solution.
+ *  3. [Weirdly Accepted, see test case2_1] Refactored bit-manipulation solution from lee215
  */
 public class MaxLenConcatStrUniqChars {
 
@@ -53,6 +53,23 @@ public class MaxLenConcatStrUniqChars {
         this.bits = set2Arr(bitset);
         this.n = this.bits.length;
         return dfs_bit_rej(0, 0);
+    }
+
+    @Test
+    public void case1() {
+        assertEquals(16, maxLength_bit_rej(new ArrayList<>(Arrays.asList("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"))));
+    }
+
+    @Test
+    public void case2_1() {
+        assertNotEquals(0, maxLength_bit_rej(new ArrayList<>(Arrays.asList("yy","bkhwmpbiisbldzknpm"))));
+        assertEquals(20, maxLength(new ArrayList<>(Arrays.asList("yy","bkhwmpbiisbldzknpm"))));
+    }
+
+    @Test
+    public void case2_2() {
+        assertEquals(0, maxLength(new ArrayList<>(Arrays.asList("yy","bkhwmpbiisbldzknpm"))));
+        assertNotEquals(20, maxLength_bit_rej(new ArrayList<>(Arrays.asList("yy","bkhwmpbiisbldzknpm"))));
     }
 
     private int dfs_bit_rej(int idx, int cur) {
@@ -96,16 +113,6 @@ public class MaxLenConcatStrUniqChars {
             arr[i++] = val;
         }
         return arr;
-    }
-
-    @Test
-    public void case1() {
-        assertEquals(16, maxLength_bit_rej(new ArrayList<>(Arrays.asList("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"))));
-    }
-
-    @Test
-    public void case2() {
-        assertNotEquals(20, maxLength_bit_rej(new ArrayList<>(Arrays.asList("yy","bkhwmpbiisbldzknpm"))));
     }
 
     // Because it require O(N), imagine input an even 1-D arr of 10 element, then it goes exponentially exploded.
