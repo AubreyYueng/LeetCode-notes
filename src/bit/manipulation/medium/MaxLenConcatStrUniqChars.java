@@ -4,14 +4,15 @@ import org.junit.Test;
 
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Created by Yiyun On 2021/9/22 20:37
  * 1239. Maximum Length of a Concatenated String with Unique Characters
  * Contains:
- *  1. Bit manipulation solution.
- *  2. TLE solution: normal DFS/brute force.
+ *  1[Rej]. Bit-manipulation solution.
+ *  2[Rej]. TLE solution: normal DFS/brute force.
+ *  3[Accept]. Refactored bit-manipulation solution from lee215
  */
 public class MaxLenConcatStrUniqChars {
 
@@ -20,6 +21,26 @@ public class MaxLenConcatStrUniqChars {
     int[] bits;
 
     public int maxLength(List<String> arr) {
+        List<Integer> dp = new ArrayList<>();
+        dp.add(0);
+        int res = 0;
+        for (String s : arr) {
+            int a = 0, dup = 0;
+            for (char c : s.toCharArray()) {
+                dup |= a & (1 << (c - 'a'));
+                a |= 1 << (c - 'a');
+            }
+            if (dup > 0) continue;
+            for (int i = dp.size() - 1; i >= 0; --i) {
+                if ((dp.get(i) & a) > 0) continue;
+                dp.add(dp.get(i) | a);
+                res = Math.max(res, Integer.bitCount(dp.get(i) | a));
+            }
+        }
+        return res;
+    }
+
+    public int maxLength_bit_rej(List<String> arr) {
         this.arr = arr;
 
         Set<Integer> bitset = new HashSet<>();
@@ -31,10 +52,10 @@ public class MaxLenConcatStrUniqChars {
         // arr只是为了在dfs取数，set拿不了
         this.bits = set2Arr(bitset);
         this.n = this.bits.length;
-        return dfs(0, 0);
+        return dfs_bit_rej(0, 0);
     }
 
-    private int dfs(int idx, int cur) {
+    private int dfs_bit_rej(int idx, int cur) {
         int curCombo = cur & ((1 << 26) - 1);
         int curLen = cur >> 26;
         int res = curLen;
@@ -49,7 +70,7 @@ public class MaxLenConcatStrUniqChars {
                 continue;
 
             int nextCombo = curCombo + nextBits + (curLen+nextLen << 26);
-            res = Math.max(res, dfs(i+1, nextCombo));
+            res = Math.max(res, dfs_bit_rej(i+1, nextCombo));
         }
         return res;
 
@@ -79,7 +100,12 @@ public class MaxLenConcatStrUniqChars {
 
     @Test
     public void case1() {
-        assertEquals(16, maxLength(new ArrayList<>(Arrays.asList("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"))));
+        assertEquals(16, maxLength_bit_rej(new ArrayList<>(Arrays.asList("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p"))));
+    }
+
+    @Test
+    public void case2() {
+        assertNotEquals(20, maxLength_bit_rej(new ArrayList<>(Arrays.asList("yy","bkhwmpbiisbldzknpm"))));
     }
 
     // Because it require O(N), imagine input an even 1-D arr of 10 element, then it goes exponentially exploded.
