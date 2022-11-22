@@ -88,8 +88,44 @@ public class LetterCombinationsOfAPhoneNumber {
         }
     }
 
+    private static String[] dic = {"", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+
+    public List<String> letterCombinations_2(String digits) {
+        List<String> results = new ArrayList<>();
+        dfs(results, new StringBuilder(), 0, toIntDigits(digits));
+        return results;
+    }
+
+    private static void dfs(List<String> results, StringBuilder cur, int digitIdx, int[] digits) {
+        if (digits.length == 0)
+            return;
+
+        if (digitIdx == digits.length) {
+            results.add(cur.toString());
+            return;
+        }
+
+        for (char letter : getLetters(digits[digitIdx])) {
+            cur.append(letter);
+            dfs(results, cur, digitIdx+1, digits);
+            cur.deleteCharAt(digitIdx);
+        }
+    }
+
+    private static int[] toIntDigits(String digits) {
+        int[] ints = new int[digits.length()];
+        for (int i = 0; i < ints.length; i++) {
+            ints[i] = Integer.parseInt(digits.toCharArray()[i] + "");
+        }
+        return ints;
+    }
+
+    private static char[] getLetters(int digit) {
+        return dic[digit-1].toCharArray();
+    }
+
     @Test
     public void case1() {
-        out.println(letterCombinations_1(""));
+        out.println(letterCombinations_2("23"));
     }
 }
